@@ -1,0 +1,94 @@
+name: فحص رابط IPA
+
+on:
+  workflow_dispatch:
+    inputs:
+      ipa_url:
+        description: رابط HTTPS مباشر لملف IPA
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: فحص الملف وبنيته
+        env:
+          IPA_URL: ${{ inputs.ipa_url }}
+        run: |
+          python3 <<'PY'
+          import os
+          import plistlib
+          import re
+          import sys
+          import tempfile
+          import urllib.request
+          import zipfile
+          from pathlib import PurePosixPath
+
+          url = os.environ["IPA_URL"].strip()
+          if not re.match(r"^https://", url, re.I):
+              raise SystemExit("يجب أن يكون الرابط HTTPS.")
+
+          request = urllib.request.Request(
+              url,
+              headers={"User-Agent": "AMARYT-STORE-IPA-Validator/1.0"}
+          )
+
+          with urllib.request.urlopen(request, timeout=45) as response:
+              status = response.status
+              content_type = response.headers.get("Content-Type", "")
+              if status != 200:
+                  raise SystemExit(f"فشل الوصول إلى الملف: HTTP {status}")
+              print(f"HTTP: {status}")
+              print(f"Content-Type: {content_type or 'غير محدد'}")
+
+              with tempfile.NamedTemporaryFile(suffix=".ipa") as tmp:
+                  total = 0
+                  while True:
+                      chunk = response.read(1024 * 1024)
+                      if not chunk:
+                          break
+                      tmp.write(chunk)
+                      total += len(chunk)
+                  tmp.flush()
+
+                  if total < 4:
+                      raise SystemExit("الملف فارغ أو أصغر من أن يكون IPA صالحاً.")
+
+                  if not zipfile.is_zipfile(tmp.name):
+                      raise SystemExit("الرابط لا يعيد ملف ZIP/IPA صالحاً.")
+
+                  with zipfile.ZipFile(tmp.name) as archive:
+                      bad_member = archive.testzip()
+                      if bad_member:
+                          raise SystemExit(f"ملف تالف داخل IPA: {bad_member}")
+
+                      plist_paths = [
+                          name for name in archive.namelist()
+                          if re.fullmatch(r"Payload/[^/]+\.app/Info\.plist", name)
+                      ]
+                      if not plist_paths:
+                          raise SystemExit("لم يتم العثور على Payload/*.app/Info.plist؛ الملف ليس IPA تطبيق iOS معروف البنية.")
+
+                      info = plistlib.loads(archive.read(plist_paths[0]))
+                      bundle = info.get("CFBundleIdentifier", "غير معروف")
+                      version = info.get("CFBundleShortVersionString", info.get("CFBundleVersion", "غير معروف"))
+                      app_prefix = str(PurePosixPath(plist_paths[0]).parent)
+                      signature_file = app_prefix + "/_CodeSignature/CodeResources"
+                      has_signature = signature_file in archive.namelist()
+
+                      print(f"الحجم: {total:,} bytes")
+                      print(f"Bundle Identifier: {bundle}")
+                      print(f"Version: {version}")
+                      print(f"ملف موارد التوقيع موجود: {'نعم' if has_signature else 'لا'}")
+                      print("نجح فحص سلامة ZIP وبنية IPA الأساسية.")
+
+                      if not has_signature:
+                          print("تحذير: لم يتم العثور على CodeResources. هذا الفحص لا يثبت صلاحية التوقيع أو إمكانية التثبيت.")
+                      else:
+                          print("تنبيه: وجود ملفات التوقيع لا يعني أن الشهادة موثوقة أو أن التثبيت مضمون.")
+          PY
