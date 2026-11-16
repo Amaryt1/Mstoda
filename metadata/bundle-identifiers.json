@@ -1,0 +1,65 @@
+{
+  "release": "1.0",
+  "apps": [
+    {
+      "name": "iQFace",
+      "file": "iQFace_1.2.ipa",
+      "expectedVersion": "1.2",
+      "bundleIdentifier": "com.facebook.Facebook",
+      "shortVersion": "580.0.0",
+      "buildVersion": "1074444153",
+      "displayName": "iQFace",
+      "versionMatches": false
+    },
+    {
+      "name": "iQGram",
+      "file": "iQGram_1.3.ipa",
+      "expectedVersion": "1.3",
+      "bundleIdentifier": "com.burbn.instagram",
+      "shortVersion": "454.0.0",
+      "buildVersion": "1104268342",
+      "displayName": "iQGram",
+      "versionMatches": false
+    },
+    {
+      "name": "iQSwift",
+      "file": "iQSwift_1.5.ipa",
+      "expectedVersion": "1.5",
+      "bundleIdentifier": "app.swiftgram.ios",
+      "shortVersion": "13.0",
+      "buildVersion": "319",
+      "displayName": "iQSwift",
+      "versionMatches": false
+    },
+    {
+      "name": "iQTele",
+      "file": "iQTele_1.5.ipa",
+      "expectedVersion": "1.5",
+      "bundleIdentifier": "ph.telegra.Telegraph",
+      "shortVersion": "13.1.1",
+      "buildVersion": "35634",
+      "displayName": "iQTele",
+      "versionMatches": false
+    },
+    {
+      "name": "iQTube",
+      "file": "iQTube_1.3.ipa",
+      "expectedVersion": "1.3",
+      "bundleIdentifier": "com.google.ios.youtube",
+      "shortVersion": "21.38.2",
+      "buildVersion": "21.38.2",
+      "displayName": "iQTube",
+      "versionMatches": false
+    },
+    {
+      "name": "iQTv",
+      "file": "iQTv.ipa",
+      "expectedVersion": "1.1",
+      "bundleIdentifier": "night.ntv1.iQTv",
+      "shortVersion": "3",
+      "buildVersion": "3",
+      "displayName": "iQTv",
+      "versionMatches": false
+    }
+  ]
+}
