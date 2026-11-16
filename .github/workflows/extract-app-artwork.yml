@@ -21,11 +21,16 @@ jobs:
       - name: جلب المستودع
         uses: actions/checkout@v4
 
+      - name: إعداد Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
       - name: إعداد أدوات استخراج الصور
         run: |
           go install github.com/devcxm/carfile-go/cmd/carfile@latest
           echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
-          python3 -m pip install --user Pillow
+          python -m pip install Pillow
 
       - name: تنزيل واستخراج الأيقونات الأصلية وإنشاء البنرات
         shell: bash
