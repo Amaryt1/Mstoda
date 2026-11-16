@@ -1,0 +1,32 @@
+name: Place branded banners beside source icons
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/place-banners-in-source.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy branded banners into source-images/aa
+        run: |
+          cp "branded-banners/iQFace Banner.jpg" "source-images/aa/iQFace Banner.jpg"
+          cp "branded-banners/iQGram Banner.webp" "source-images/aa/iQGram Banner.webp"
+          cp "branded-banners/iQSwift Banner.webp" "source-images/aa/iQSwift Banner.webp"
+          cp "branded-banners/iQTele Banner.webp" "source-images/aa/iQTele Banner.webp"
+          cp "branded-banners/iQTube Banner.webp" "source-images/aa/iQTube Banner.webp"
+          cp "branded-banners/iQTv Banner.webp" "source-images/aa/iQTv Banner.webp"
+      - name: Commit banners in the source folder
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "source-images/aa/iQFace Banner.jpg" "source-images/aa/iQGram Banner.webp" "source-images/aa/iQSwift Banner.webp" "source-images/aa/iQTele Banner.webp" "source-images/aa/iQTube Banner.webp" "source-images/aa/iQTv Banner.webp"
+          git commit -m "Place branded banners beside app icons"
+          git push
