@@ -165,6 +165,26 @@
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQTv%20Banner.webp",
       "tintColor": "#4299E1",
       "sortOrder": 8
+    },
+    {
+      "bundleIdentifier": "net.peakgames.kammelna",
+      "versions": [
+        {
+          "version": "3.11.0",
+          "date": "2026-11-17T00:00:00Z",
+          "downloadURL": "https://github.com/Amaryt1/Mstoda/releases/download/1.0/Kammelna-3.11.0-k7balot.ipa",
+          "localizedDescription": "كملنا VIP — الإصدار 3.11.0"
+        }
+      ],
+      "screenshotURLs": [],
+      "name": "كملنا VIP",
+      "subtitle": "كملنا VIP — v3.11.0",
+      "category": "العاب معدّلة",
+      "localizedDescription": "التفعيل الأساسي: تشغيل جميع الأدوات أو إيقافها. سجل اللعب: عرض الكروت الملعوبة أثناء الجولة. تهريب الخوي: كشف ورق الخوي. القاطع: كشف قطع اللون وعدم ترقية الحكم. لا تنسى مشاريعك بالذيب: تنبيهك بالمشاريع أثناء اللعب. اللعب التلقائي: اللعب نيابةً عنك بتوقيت طبيعي. تخطّي الإعلان: اللعب دون إعلانات. تفعيل الاشتراك. لعب لا محدود. فتح الرسائل الخاصة. فتح الشات العام. فتح التعابير. بدون إعلانات. إخفاء الأداة من التصوير والبث. تحديد اللاعب الذي لم يدق الحكم من الخصوم — ميزة تجريبية. عدّاد الورق للعبة جاكارو — منفصل عن البلوت. التزييف. تغيير خلفية الطاولة. تغيير الصوت.",
+      "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Kmlna.png",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Kmlna%20bnar.png",
+      "tintColor": "#4299E1",
+      "sortOrder": 9
     }
   ],
   "news": [],
