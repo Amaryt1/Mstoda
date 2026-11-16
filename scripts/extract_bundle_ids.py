@@ -9,6 +9,7 @@ files = [
     ("iQTele", "iQTele_1.5.ipa", "1.5"),
     ("iQTube", "iQTube_1.3.ipa", "1.3"),
     ("iQTv", "iQTv.ipa", "1.1"),
+    ("كملنا VIP", "Kammelna-3.11.0-k7balot.ipa", "3.11.0"),
 ]
 results = []
 for name, filename, expected in files:
