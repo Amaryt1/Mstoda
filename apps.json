@@ -24,6 +24,27 @@
       "bannerURL": "https://i.ibb.co/wr4XFVBB/Picsart-26-07-27-04-50-05-612.jpg",
       "tintColor": "#4299E1",
       "sortOrder": 1
+    },
+    {
+      "bundleIdentifier": "com.guohua.ciner",
+      "versions": [
+        {
+          "version": "v4.7.0",
+          "date": "2026-11-16T20:31:00Z",
+          "downloadURL": "https://file.ipaomtk.com/hitv-asian-drama-v1-10-0/HiTV.ipa",
+          "localizedDescription": "Premium / VIP / Pro / Unlocked"
+        }
+      ],
+      "screenshotURLs": [],
+      "name": "HiTV",
+      "subtitle": "Premium / VIP / Pro / Unlocked",
+      "developerName": "HiTV",
+      "category": "أفلام",
+      "localizedDescription": "Premium / VIP / Pro / Unlocked",
+      "iconURL": "https://ipaomtk.com/wp-content/uploads/2023/02/unnamed-4-2.png",
+      "bannerURL": "https://i.ibb.co/Wpnnkh8P/image.png",
+      "tintColor": "#4299E1",
+      "sortOrder": 2
     }
   ],
   "news": [],
