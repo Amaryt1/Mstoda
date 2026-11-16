@@ -23,7 +23,7 @@
       "iconURL": "https://i.ibb.co/dsKD4wm2/IMG-20260812-132110-926.jpg",
       "bannerURL": "https://i.ibb.co/wr4XFVBB/Picsart-26-07-27-04-50-05-612.jpg",
       "tintColor": "#4299E1",
-      "sortOrder": 1
+      "sortOrder": 2
     },
     {
       "bundleIdentifier": "com.guohua.ciner",
@@ -44,7 +44,7 @@
       "iconURL": "https://ipaomtk.com/wp-content/uploads/2023/02/unnamed-4-2.png",
       "bannerURL": "https://i.ibb.co/Wpnnkh8P/image.png",
       "tintColor": "#4299E1",
-      "sortOrder": 2
+      "sortOrder": 3
     },
     {
       "bundleIdentifier": "com.facebook.Facebook",
@@ -64,7 +64,7 @@
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQFace_1.2_Facebook_20261117_003919.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQFace%20Banner.jpg",
       "tintColor": "#4299E1",
-      "sortOrder": 3
+      "sortOrder": 4
     },
     {
       "bundleIdentifier": "com.burbn.instagram",
@@ -84,7 +84,7 @@
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQGram_1.3_20261117_003912.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQGram%20Banner.webp",
       "tintColor": "#4299E1",
-      "sortOrder": 4
+      "sortOrder": 5
     },
     {
       "bundleIdentifier": "app.swiftgram.ios",
@@ -104,7 +104,7 @@
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQSwift_1.5_20261117_003915.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQSwift%20Banner.webp",
       "tintColor": "#4299E1",
-      "sortOrder": 5
+      "sortOrder": 6
     },
     {
       "bundleIdentifier": "ph.telegra.Telegraph",
@@ -124,7 +124,7 @@
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQTele_1.5_20261117_003917.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQTele%20Banner.webp",
       "tintColor": "#4299E1",
-      "sortOrder": 6
+      "sortOrder": 7
     },
     {
       "bundleIdentifier": "com.google.ios.youtube",
@@ -144,7 +144,7 @@
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQTube_1.3_20261117_003922.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQTube%20Banner.webp",
       "tintColor": "#4299E1",
-      "sortOrder": 7
+      "sortOrder": 8
     },
     {
       "bundleIdentifier": "night.ntv1.iQTv",
@@ -164,7 +164,7 @@
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQTv_20261117_003926.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQTv%20Banner.webp",
       "tintColor": "#4299E1",
-      "sortOrder": 8
+      "sortOrder": 9
     },
     {
       "bundleIdentifier": "net.peakgames.kammelna",
@@ -184,7 +184,7 @@
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Kmlna.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Kmlna%20bnar.png",
       "tintColor": "#4299E1",
-      "sortOrder": 9
+      "sortOrder": 1
     }
   ],
   "news": [],
