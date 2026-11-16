@@ -3,7 +3,9 @@
   "identifier": "com.amaryt1.store",
   "description": "المصدر الرسمي لقسم جديد في AMARYT STORE",
   "website": "https://github.com/Amaryt1/Mstoda",
-  "apps": [
+  "apps": [],
+  "news": [],
+  "hiddenApps": [
     {
       "bundleIdentifier": "G.me",
       "versions": [
@@ -25,7 +27,5 @@
       "tintColor": "#4299E1",
       "sortOrder": 1
     }
-  ],
-  "news": [],
-  "hiddenApps": []
+  ]
 }
