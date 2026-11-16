@@ -60,6 +60,16 @@
       "buildVersion": "3",
       "displayName": "iQTv",
       "versionMatches": false
+    },
+    {
+      "name": "كملنا VIP",
+      "file": "Kammelna-3.11.0-k7balot.ipa",
+      "expectedVersion": "3.11.0",
+      "bundleIdentifier": "net.peakgames.kammelna",
+      "shortVersion": "3.11.0",
+      "buildVersion": "308",
+      "displayName": "كملنا",
+      "versionMatches": true
     }
   ]
 }
