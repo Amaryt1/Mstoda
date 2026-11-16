@@ -45,6 +45,126 @@
       "bannerURL": "https://i.ibb.co/Wpnnkh8P/image.png",
       "tintColor": "#4299E1",
       "sortOrder": 2
+    },
+    {
+      "bundleIdentifier": "com.facebook.Facebook",
+      "versions": [
+        {
+          "version": "1.2",
+          "date": "2026-11-17T00:00:00Z",
+          "downloadURL": "https://github.com/Amaryt1/Mstoda/releases/download/1.0/iQFace_1.2.ipa",
+          "localizedDescription": "ميزات إضافية وتجربة محسّنة لفيسبوك"
+        }
+      ],
+      "screenshotURLs": [],
+      "name": "iQFace",
+      "subtitle": "ميزات إضافية وتجربة محسّنة لفيسبوك",
+      "category": "تواصل اجتماعي",
+      "localizedDescription": "للوصول إلى إعدادات iQFace: اضغط على شعار فيسبوك في الزاوية العلوية اليسرى أو شعار iQ. للوصول إلى إعدادات Facebook Plus: اضغط مع الاستمرار على أيقونة شريط الصفحة الرئيسية، أو اضغط مع الاستمرار على شعار فيسبوك في الأعلى. يتضمن وضع OLED، وأيقونات Facebook Plus، وأداة تنظيف الذاكرة المؤقتة، ومرشحات الصفحة الرئيسية، وإضافة Safari لـ OpenInFacebook.",
+      "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQFace_1.2_Facebook_20261117_003919.png",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/branded-banners/iQFace%20Banner.jpg",
+      "tintColor": "#4299E1",
+      "sortOrder": 3
+    },
+    {
+      "bundleIdentifier": "com.burbn.instagram",
+      "versions": [
+        {
+          "version": "1.3",
+          "date": "2026-11-17T00:00:00Z",
+          "downloadURL": "https://github.com/Amaryt1/Mstoda/releases/download/1.0/iQGram_1.3.ipa",
+          "localizedDescription": "وضع الشبح وميزات إضافية للرسائل والوسائط"
+        }
+      ],
+      "screenshotURLs": [],
+      "name": "iQGram",
+      "subtitle": "وضع الشبح وميزات إضافية للرسائل والوسائط",
+      "category": "تواصل اجتماعي",
+      "localizedDescription": "وضع الشبح (رسائل - قصص - بثوث). إبقاء الرسائل المحذوفة. تسجيل المكالمات (فيديو - صوت). رفع الفويس من الملفات أو الاستديو أو YouTube. تنزيل الوسائط المؤقتة. التنزيل المحسن (كل الجودات). إمكانية نسخ (يوزر-كابشن-بايو-اسم). دعم كامل للغة العربية (إعدادات الجهاز > تطبيقات > iQGram > اللغات واختر العربية).",
+      "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQGram_1.3_20261117_003912.png",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/branded-banners/iQGram%20Banner.webp",
+      "tintColor": "#4299E1",
+      "sortOrder": 4
+    },
+    {
+      "bundleIdentifier": "app.swiftgram.ios",
+      "versions": [
+        {
+          "version": "1.5",
+          "date": "2026-11-17T00:00:00Z",
+          "downloadURL": "https://github.com/Amaryt1/Mstoda/releases/download/1.0/iQSwift_1.5.ipa",
+          "localizedDescription": "وضع الشبح وأدوات إضافية للرسائل والمكالمات"
+        }
+      ],
+      "screenshotURLs": [],
+      "name": "iQSwift",
+      "subtitle": "وضع الشبح وأدوات إضافية للرسائل والمكالمات",
+      "category": "تواصل اجتماعي",
+      "localizedDescription": "وضع الشبح (رسائل - قصص). إبقاء الرسائل المحذوفة. تسجيل المكالمات (فيديو - صوت). رفع الفويس من الملفات أو الاستديو أو YouTube. تنزيل الوسائط المؤقتة. ترجمة الرسائل. سجل تعديل الرسائل. النسخ تدعم الإشعارات بشرط عدم التكرار (تغيير البندل).",
+      "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQSwift_1.5_20261117_003915.png",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/branded-banners/iQSwift%20Banner.webp",
+      "tintColor": "#4299E1",
+      "sortOrder": 5
+    },
+    {
+      "bundleIdentifier": "ph.telegra.Telegraph",
+      "versions": [
+        {
+          "version": "1.5",
+          "date": "2026-11-17T00:00:00Z",
+          "downloadURL": "https://github.com/Amaryt1/Mstoda/releases/download/1.0/iQTele_1.5.ipa",
+          "localizedDescription": "وضع الشبح وأدوات متقدمة للمحادثات"
+        }
+      ],
+      "screenshotURLs": [],
+      "name": "iQTele",
+      "subtitle": "وضع الشبح وأدوات متقدمة للمحادثات",
+      "category": "تواصل اجتماعي",
+      "localizedDescription": "وضع الشبح (رسائل - قصص). إبقاء الرسائل المحذوفة. تسجيل المكالمات (فيديو - صوت). رفع الفويس من الملفات أو الاستديو أو YouTube. تنزيل الوسائط المؤقتة. ترجمة الرسائل. سجل تعديل الرسائل. النسخ تدعم الإشعارات بشرط عدم التكرار (تغيير البندل).",
+      "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQTele_1.5_20261117_003917.png",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/branded-banners/iQTele%20Banner.webp",
+      "tintColor": "#4299E1",
+      "sortOrder": 6
+    },
+    {
+      "bundleIdentifier": "com.google.ios.youtube",
+      "versions": [
+        {
+          "version": "1.3",
+          "date": "2026-11-17T00:00:00Z",
+          "downloadURL": "https://github.com/Amaryt1/Mstoda/releases/download/1.0/iQTube_1.3.ipa",
+          "localizedDescription": "تحميل الفيديو والصوت وتشغيل بالخلفية"
+        }
+      ],
+      "screenshotURLs": [],
+      "name": "iQTube",
+      "subtitle": "تحميل الفيديو والصوت وتشغيل بالخلفية",
+      "category": "فيديو",
+      "localizedDescription": "تحميل فيديو/شورتس/صوت بجودات عالية ومتنوعة. حفظ الصور المصغرة. تشغيل الفيديو بالخلفية (PiP). حذف الإعلانات بالكامل من التطبيق، مع المنع الذكي. تسجيل الدخول يعمل بالنسخ الأصلية والمكررة. النسخ الاحتياطي. والمزيد داخل إعدادات الأداة.",
+      "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQTube_1.3_20261117_003922.png",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/branded-banners/iQTube%20Banner.webp",
+      "tintColor": "#4299E1",
+      "sortOrder": 7
+    },
+    {
+      "bundleIdentifier": "night.ntv1.iQTv",
+      "versions": [
+        {
+          "version": "1.1",
+          "date": "2026-11-17T00:00:00Z",
+          "downloadURL": "https://github.com/Amaryt1/Mstoda/releases/download/1.0/iQTv.ipa",
+          "localizedDescription": "مشاهدة الأفلام والمسلسلات والبث المباشر"
+        }
+      ],
+      "screenshotURLs": [],
+      "name": "iQTv",
+      "subtitle": "مشاهدة الأفلام والمسلسلات والبث المباشر",
+      "category": "أفلام",
+      "localizedDescription": "تطبيق لمشاهدة الأفلام والمسلسلات والبث المباشر. يحتوي على سيرفرات متعددة تعمل مع جميع أنواع الإنترنت. يمكن تغيير السيرفر من إعدادات التطبيق.",
+      "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQTv_20261117_003926.png",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/branded-banners/iQTv%20Banner.webp",
+      "tintColor": "#4299E1",
+      "sortOrder": 8
     }
   ],
   "news": [],
