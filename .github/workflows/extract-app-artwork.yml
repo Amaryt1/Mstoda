@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - "source-images/icons.jpg"
       - ".github/workflows/extract-app-artwork.yml"
 
 permissions:
@@ -16,172 +17,104 @@ concurrency:
 jobs:
   artwork:
     runs-on: macos-latest
-    timeout-minutes: 360
+    timeout-minutes: 20
     steps:
       - name: جلب المستودع
         uses: actions/checkout@v4
 
-      - name: إعداد Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: إعداد أدوات استخراج الصور
+      - name: إعداد أدوات قراءة الصورة
         run: |
-          go install github.com/devcxm/carfile-go/cmd/carfile@latest
-          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
-          python -m pip install Pillow
+          brew install tesseract
+          python3 -m pip install --user Pillow pytesseract
 
-      - name: تنزيل واستخراج الأيقونات الأصلية وإنشاء البنرات
-        shell: bash
+      - name: قص الأيقونات وإنشاء البنرات من الصورة المرفوعة
         run: |
-          set -euo pipefail
-          mkdir -p work/ipas work/unpacked preview-assets/icons preview-assets/banners
-          declare -A files=(
-            [iQFace]="iQFace_1.2.ipa"
-            [iQGram]="iQGram_1.3.ipa"
-            [iQSwift]="iQSwift_1.5.ipa"
-            [iQTele]="iQTele_1.5.ipa"
-            [iQTube]="iQTube_1.3.ipa"
-            [iQTv]="iQTv.ipa"
-          )
-          for app in iQFace iQGram iQSwift iQTele iQTube iQTv; do
-            file="${files[$app]}"
-            url="https://github.com/Amaryt1/Mstoda/releases/download/1.0/$file"
-            echo "Downloading $file"
-            curl --fail --location --retry 4 --retry-delay 3 "$url" -o "work/ipas/$file"
-            mkdir -p "work/unpacked/$app"
-            ditto -x -k "work/ipas/$file" "work/unpacked/$app"
-          done
-
           python3 <<'PY'
-          import json, plistlib, shutil, subprocess, sys
           from pathlib import Path
-          from PIL import Image, ImageDraw, ImageFilter, ImageFont
+          from PIL import Image, ImageDraw, ImageFont, ImageFilter
+          import pytesseract, re, json
 
-          root = Path("work/unpacked")
+          source = Path("source-images/icons.jpg")
+          if not source.exists():
+              raise SystemExit("لم يتم العثور على source-images/icons.jpg")
+          im = Image.open(source).convert("RGB")
+          W, H = im.size
+          data = pytesseract.image_to_data(im, output_type=pytesseract.Output.DICT, config="--psm 11")
+          targets = ["iQFace", "iQGram", "iQSwift", "iQTele", "iQTube", "iQTv"]
+          normalized = lambda s: re.sub(r"[^a-z0-9]", "", s.lower())
+          tokens = []
+          for i, raw in enumerate(data["text"]):
+              t = normalized(raw)
+              if t:
+                  tokens.append((t, i))
           out_icons = Path("preview-assets/icons")
           out_banners = Path("preview-assets/banners")
-          apps = ["iQFace", "iQGram", "iQSwift", "iQTele", "iQTube", "iQTv"]
-          report = {"release": "1.0", "apps": []}
+          out_icons.mkdir(parents=True, exist_ok=True)
+          out_banners.mkdir(parents=True, exist_ok=True)
+          report = {"source": str(source), "imageSize": [W, H], "apps": []}
 
-          def square_pngs(folder):
-              found = []
-              for p in folder.rglob("*.png"):
-                  try:
-                      with Image.open(p) as im:
-                          w, h = im.size
-                          if w == h and w >= 120:
-                              found.append((w*h, p))
-                  except Exception:
-                      pass
-              return found
-
-          def load_font(size, bold=False):
-              candidates = [
-                  "/System/Library/Fonts/Supplemental/Arial Bold.ttf" if bold else "/System/Library/Fonts/Supplemental/Arial.ttf",
-                  "/System/Library/Fonts/SFNS.ttf"
-              ]
-              for f in candidates:
-                  if Path(f).exists():
-                      return ImageFont.truetype(f, size)
+          def font(size):
+              for p in ["/System/Library/Fonts/Supplemental/Arial Bold.ttf",
+                        "/System/Library/Fonts/Supplemental/Arial.ttf"]:
+                  if Path(p).exists():
+                      return ImageFont.truetype(p, size)
               return ImageFont.load_default()
 
-          for app in apps:
-              app_dirs = list((root/app/"Payload").glob("*.app"))
-              if len(app_dirs) != 1:
-                  raise SystemExit(f"{app}: expected one app bundle, found {len(app_dirs)}")
-              bundle = app_dirs[0]
-              info = plistlib.loads((bundle/"Info.plist").read_bytes())
-              icon_names = []
-              icons = info.get("CFBundleIcons", {}).get("CFBundlePrimaryIcon", {})
-              icon_names += icons.get("CFBundleIconFiles", [])
-              if icons.get("CFBundleIconName"):
-                  icon_names.append(icons["CFBundleIconName"])
-              if info.get("CFBundleIconFiles"):
-                  icon_names += info["CFBundleIconFiles"]
-              icon_names = [str(x).lower() for x in icon_names if x]
+          for app in targets:
+              key = normalized(app)
+              matches = [i for t, i in tokens if key in t or t in key]
+              if not matches:
+                  # Also allow OCR to split an app label into adjacent words.
+                  for pos, (t, i) in enumerate(tokens):
+                      joined = t
+                      ids = [i]
+                      for t2, i2 in tokens[pos+1:pos+3]:
+                          joined += t2
+                          ids.append(i2)
+                          if key in joined:
+                              matches.extend(ids)
+                              break
+              if not matches:
+                  raise SystemExit(f"لم أتعرف على اسم {app} داخل الصورة؛ أوقفت العملية حتى لا أقص أيقونة خاطئة.")
+              i = matches[0]
+              x, y = data["left"][i], data["top"][i]
+              tw, th = data["width"][i], data["height"][i]
+              # في قائمة التطبيقات تكون الأيقونة عادةً إلى يسار اسم التطبيق.
+              side = max(int(th * 3.0), int(tw * 1.25), 96)
+              cy = y + th // 2
+              cx = x - side * 0.78
+              left = max(0, min(W-side, int(cx-side/2)))
+              top = max(0, min(H-side, int(cy-side/2)))
+              crop = im.crop((left, top, left+side, top+side))
+              # إذا كان موضع اليسار خارج الصورة، جرّب الجهة المقابلة.
+              if x < side * 0.8:
+                  left = max(0, min(W-side, int(x+tw+th*0.3)))
+                  crop = im.crop((left, top, left+side, top+side))
+              icon_path = out_icons / f"{app}.png"
+              crop.save(icon_path, "PNG", optimize=True)
 
-              candidates = []
-              # First preference: original loose icon files explicitly named in Info.plist.
-              for p in bundle.rglob("*"):
-                  if p.is_file() and p.suffix.lower() == ".png":
-                      stem = p.stem.lower()
-                      if any(n in stem or stem in n for n in icon_names):
-                          try:
-                              with Image.open(p) as im:
-                                  if im.width == im.height and im.width >= 120:
-                                      candidates.append((im.width*im.height, p))
-                          except Exception:
-                              pass
+              swatch = crop.resize((1,1)).getpixel((0,0))
+              bw, bh = 1200, 600
+              bg = Image.new("RGB", (bw,bh), (13,16,27))
+              glow = Image.new("RGB", (bw,bh), swatch).filter(ImageFilter.GaussianBlur(150))
+              bg = Image.blend(bg, glow, 0.22)
+              banner = bg.convert("RGBA")
+              icon = crop.resize((300,300), Image.Resampling.LANCZOS).convert("RGBA")
+              banner.alpha_composite(icon, (125,150))
+              d = ImageDraw.Draw(banner)
+              d.text((500,235), app, font=font(76), fill="white", stroke_width=2, stroke_fill=(0,0,0,130))
+              d.text((505,340), "AMARYT STORE", font=font(30), fill=(220,225,238,255))
+              banner.convert("RGB").save(out_banners/f"{app}.png", "PNG", optimize=True)
+              report["apps"].append({"name":app,"icon":str(icon_path),"banner":str(out_banners/f"{app}.png"),"ocrBox":{"x":x,"y":y,"width":tw,"height":th}})
+              print(f"Prepared {app}: OCR label at {x},{y}")
 
-              # Also extract the compiled catalog, preserving the app's own icon artwork.
-              car = bundle/"Assets.car"
-              if car.exists():
-                  extracted = Path("work")/f"car-{app}"
-                  extracted.mkdir(parents=True, exist_ok=True)
-                  subprocess.run(["carfile", "-o", str(extracted), str(car)], check=True)
-                  for area, p in square_pngs(extracted):
-                      label = str(p.relative_to(extracted)).lower()
-                      if any(n in label for n in icon_names) or "appicon" in label or "app-icon" in label:
-                          candidates.append((area, p))
-
-              if not candidates:
-                  raise SystemExit(f"{app}: couldn't confidently identify the official app icon; no substitute was used.")
-              candidates.sort(key=lambda item: item[0], reverse=True)
-              source = candidates[0][1]
-              icon_path = out_icons/f"{app}.png"
-              shutil.copyfile(source, icon_path)
-
-              with Image.open(icon_path) as opened:
-                  icon = opened.convert("RGBA")
-                  if icon.width != icon.height:
-                      raise SystemExit(f"{app}: extracted icon is not square.")
-                  swatch = icon.resize((1, 1)).getpixel((0, 0))[:3]
-              W, H = 1200, 600
-              base = Image.new("RGB", (W, H), (12, 15, 24))
-              px = base.load()
-              for y in range(H):
-                  for x in range(W):
-                      dx, dy = (x-330)/520, (y-290)/390
-                      glow = max(0, 1-(dx*dx+dy*dy))**2 * 0.58
-                      edge = (x/W)*0.12
-                      px[x,y] = tuple(int(min(255, (12,15,24)[i] + swatch[i]*(glow+edge))) for i in range(3))
-              base = base.filter(ImageFilter.GaussianBlur(1.2))
-              canvas = base.convert("RGBA")
-              # Original icon artwork is only scaled for placement; the source icon file remains untouched.
-              icon.thumbnail((330, 330), Image.Resampling.LANCZOS)
-              canvas.alpha_composite(icon, (115+(330-icon.width)//2, 135+(330-icon.height)//2))
-              draw = ImageDraw.Draw(canvas)
-              font = load_font(76, True)
-              small = load_font(28, False)
-              draw.text((520, 235), app, font=font, fill=(255,255,255,255), stroke_width=1, stroke_fill=(0,0,0,110))
-              draw.text((525, 335), "AMARYT STORE", font=small, fill=(220,225,238,220))
-              banner_path = out_banners/f"{app}.png"
-              canvas.convert("RGB").save(banner_path, "PNG", optimize=True)
-
-              report["apps"].append({
-                  "name": app,
-                  "bundleIdentifier": info.get("CFBundleIdentifier", ""),
-                  "version": info.get("CFBundleShortVersionString", info.get("CFBundleVersion", "")),
-                  "icon": str(icon_path),
-                  "banner": str(banner_path),
-                  "iconSource": str(source)
-              })
-              print(f"Prepared {app}: {report['apps'][-1]['bundleIdentifier']} {report['apps'][-1]['version']}")
-
-          Path("preview-assets/metadata.json").write_text(json.dumps(report, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
-          readme = [
-              "# AMARYT STORE — معاينة الأيقونات والبنرات",
-              "",
-              "هذه ملفات معاينة فقط. لم يتم تعديل apps.json.",
-              "",
-              "| التطبيق | الأيقونة الأصلية | البنر |",
-              "|---|---|---|",
-          ]
-          for app in apps:
-              readme.append(f"| {app} | [PNG](icons/{app}.png) | [PNG](banners/{app}.png) |")
-          Path("preview-assets/README.md").write_text("\n".join(readme)+"\n", encoding="utf-8")
+          Path("preview-assets/metadata.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          rows = ["# AMARYT STORE — معاينة الأيقونات والبنرات", "",
+                  "هذه معاينة مبنية من الصورة source-images/icons.jpg فقط. لم يتم تعديل apps.json.", "",
+                  "| التطبيق | الأيقونة | البنر |","|---|---|---|"]
+          for app in targets:
+              rows.append(f"| {app} | [عرض الأيقونة](icons/{app}.png) | [عرض البنر](banners/{app}.png) |")
+          Path("preview-assets/README.md").write_text("\n".join(rows)+"\n",encoding="utf-8")
           PY
 
       - name: حفظ ملفات المعاينة فقط
@@ -193,5 +126,5 @@ jobs:
             echo "لا توجد ملفات جديدة لحفظها."
             exit 0
           fi
-          git commit -m "Prepare original app icons and preview banners"
+          git commit -m "Prepare app icon crops and preview banners"
           git push
