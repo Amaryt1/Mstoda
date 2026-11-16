@@ -62,7 +62,7 @@
       "category": "تواصل اجتماعي",
       "localizedDescription": "للوصول إلى إعدادات iQFace: اضغط على شعار فيسبوك في الزاوية العلوية اليسرى أو شعار iQ. للوصول إلى إعدادات Facebook Plus: اضغط مع الاستمرار على أيقونة شريط الصفحة الرئيسية، أو اضغط مع الاستمرار على شعار فيسبوك في الأعلى. يتضمن وضع OLED، وأيقونات Facebook Plus، وأداة تنظيف الذاكرة المؤقتة، ومرشحات الصفحة الرئيسية، وإضافة Safari لـ OpenInFacebook.",
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQFace_1.2_Facebook_20261117_003919.png",
-      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/branded-banners/iQFace%20Banner.jpg",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQFace%20Banner.jpg",
       "tintColor": "#4299E1",
       "sortOrder": 3
     },
@@ -82,7 +82,7 @@
       "category": "تواصل اجتماعي",
       "localizedDescription": "وضع الشبح (رسائل - قصص - بثوث). إبقاء الرسائل المحذوفة. تسجيل المكالمات (فيديو - صوت). رفع الفويس من الملفات أو الاستديو أو YouTube. تنزيل الوسائط المؤقتة. التنزيل المحسن (كل الجودات). إمكانية نسخ (يوزر-كابشن-بايو-اسم). دعم كامل للغة العربية (إعدادات الجهاز > تطبيقات > iQGram > اللغات واختر العربية).",
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQGram_1.3_20261117_003912.png",
-      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/branded-banners/iQGram%20Banner.webp",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQGram%20Banner.webp",
       "tintColor": "#4299E1",
       "sortOrder": 4
     },
@@ -102,7 +102,7 @@
       "category": "تواصل اجتماعي",
       "localizedDescription": "وضع الشبح (رسائل - قصص). إبقاء الرسائل المحذوفة. تسجيل المكالمات (فيديو - صوت). رفع الفويس من الملفات أو الاستديو أو YouTube. تنزيل الوسائط المؤقتة. ترجمة الرسائل. سجل تعديل الرسائل. النسخ تدعم الإشعارات بشرط عدم التكرار (تغيير البندل).",
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQSwift_1.5_20261117_003915.png",
-      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/branded-banners/iQSwift%20Banner.webp",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQSwift%20Banner.webp",
       "tintColor": "#4299E1",
       "sortOrder": 5
     },
@@ -122,7 +122,7 @@
       "category": "تواصل اجتماعي",
       "localizedDescription": "وضع الشبح (رسائل - قصص). إبقاء الرسائل المحذوفة. تسجيل المكالمات (فيديو - صوت). رفع الفويس من الملفات أو الاستديو أو YouTube. تنزيل الوسائط المؤقتة. ترجمة الرسائل. سجل تعديل الرسائل. النسخ تدعم الإشعارات بشرط عدم التكرار (تغيير البندل).",
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQTele_1.5_20261117_003917.png",
-      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/branded-banners/iQTele%20Banner.webp",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQTele%20Banner.webp",
       "tintColor": "#4299E1",
       "sortOrder": 6
     },
@@ -142,7 +142,7 @@
       "category": "فيديو",
       "localizedDescription": "تحميل فيديو/شورتس/صوت بجودات عالية ومتنوعة. حفظ الصور المصغرة. تشغيل الفيديو بالخلفية (PiP). حذف الإعلانات بالكامل من التطبيق، مع المنع الذكي. تسجيل الدخول يعمل بالنسخ الأصلية والمكررة. النسخ الاحتياطي. والمزيد داخل إعدادات الأداة.",
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQTube_1.3_20261117_003922.png",
-      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/branded-banners/iQTube%20Banner.webp",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQTube%20Banner.webp",
       "tintColor": "#4299E1",
       "sortOrder": 7
     },
@@ -162,7 +162,7 @@
       "category": "أفلام",
       "localizedDescription": "تطبيق لمشاهدة الأفلام والمسلسلات والبث المباشر. يحتوي على سيرفرات متعددة تعمل مع جميع أنواع الإنترنت. يمكن تغيير السيرفر من إعدادات التطبيق.",
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQTv_20261117_003926.png",
-      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/branded-banners/iQTv%20Banner.webp",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQTv%20Banner.webp",
       "tintColor": "#4299E1",
       "sortOrder": 8
     }
