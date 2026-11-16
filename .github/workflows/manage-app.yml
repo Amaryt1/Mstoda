@@ -116,11 +116,18 @@ jobs:
               raise SystemExit("يجب إدخال Bundle Identifier.")
 
           apps = data["apps"]
-          matches = [i for i, app in enumerate(apps)
-                     if app.get("bundleIdentifier") == bundle]
+          hidden = data.setdefault("hiddenApps", [])
+          if not isinstance(hidden, list):
+              raise SystemExit("خطأ: hiddenApps يجب أن تكون مصفوفة.")
 
-          if len(matches) > 1:
-              raise SystemExit("يوجد أكثر من تطبيق بنفس Bundle Identifier؛ أصلح التكرار أولاً.")
+          def find(items):
+              return [i for i, item in enumerate(items)
+                      if item.get("bundleIdentifier") == bundle]
+
+          active_matches = find(apps)
+          hidden_matches = find(hidden)
+          if len(active_matches) + len(hidden_matches) > 1:
+              raise SystemExit("يوجد تكرار لهذا Bundle Identifier في التطبيقات أو المخفية.")
 
           fields = {
               "name": "APP_NAME",
@@ -134,8 +141,8 @@ jobs:
           }
 
           if op == "add":
-              if matches:
-                  raise SystemExit("هذا التطبيق موجود مسبقاً. استخدم update لتعديله.")
+              if active_matches or hidden_matches:
+                  raise SystemExit("هذا التطبيق موجود مسبقاً. استخدم update لتعديله أو show لإظهاره.")
               if not os.environ.get("APP_NAME", "").strip():
                   raise SystemExit("إضافة تطبيق تتطلب الاسم.")
               app = {"bundleIdentifier": bundle, "versions": [], "screenshotURLs": []}
@@ -144,24 +151,32 @@ jobs:
                   if value:
                       app[key] = value
               apps.append(app)
-          else:
-              if not matches:
+          elif op == "show":
+              if not hidden_matches:
+                  raise SystemExit("التطبيق غير موجود في قائمة التطبيقات المخفية.")
+              app = hidden.pop(hidden_matches[0])
+              apps.append(app)
+          elif op in ("update", "hide", "delete"):
+              if not active_matches and not hidden_matches:
                   raise SystemExit("لم يتم العثور على تطبيق بهذا Bundle Identifier.")
-              index = matches[0]
-              app = apps[index]
+              is_hidden = bool(hidden_matches)
+              collection = hidden if is_hidden else apps
+              index = hidden_matches[0] if is_hidden else active_matches[0]
+              app = collection[index]
               if op == "delete":
-                  del apps[index]
+                  del collection[index]
               elif op == "hide":
-                  app["isHidden"] = True
-              elif op == "show":
-                  app.pop("isHidden", None)
+                  if is_hidden:
+                      raise SystemExit("التطبيق مخفي بالفعل.")
+                  del apps[index]
+                  hidden.append(app)
               elif op == "update":
                   for key, env_key in fields.items():
                       value = os.environ.get(env_key, "").strip()
                       if value:
                           app[key] = value
-              else:
-                  raise SystemExit("عملية غير معروفة.")
+          else:
+              raise SystemExit("عملية غير معروفة.")
 
           if op in ("add", "update"):
               version = os.environ.get("VERSION", "").strip()
@@ -190,8 +205,8 @@ jobs:
                   except ValueError:
                       raise SystemExit("ترتيب التطبيق يجب أن يكون رقماً صحيحاً.")
 
-          if op != "delete":
-              apps.sort(key=lambda item: (
+          for collection in (apps, hidden):
+              collection.sort(key=lambda item: (
                   item.get("sortOrder", 1000000),
                   item.get("name", "").casefold()
               ))
