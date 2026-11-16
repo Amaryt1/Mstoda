@@ -1,0 +1,216 @@
+name: إدارة تطبيقات AMARYT STORE
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: العملية المطلوبة
+        required: true
+        type: choice
+        options:
+          - add
+          - update
+          - hide
+          - show
+          - delete
+      bundle_identifier:
+        description: Bundle Identifier — مفتاح التطبيق للتعديل أو الحذف
+        required: true
+        type: string
+      name:
+        description: اسم التطبيق
+        required: false
+        type: string
+      subtitle:
+        description: عنوان قصير
+        required: false
+        type: string
+      developer_name:
+        description: اسم المطور
+        required: false
+        type: string
+      category:
+        description: التصنيف
+        required: false
+        type: string
+      description:
+        description: الوصف الكامل
+        required: false
+        type: string
+      icon_url:
+        description: رابط الأيقونة المباشر
+        required: false
+        type: string
+      banner_url:
+        description: رابط صورة الخلفية المباشر
+        required: false
+        type: string
+      tint_color:
+        description: لون HEX اختياري دون #
+        required: false
+        type: string
+      version:
+        description: رقم الإصدار الجديد — اتركه فارغاً إذا لم ترد إضافة إصدار
+        required: false
+        type: string
+      download_url:
+        description: رابط تنزيل IPA للإصدار الجديد
+        required: false
+        type: string
+      release_notes:
+        description: ملاحظات الإصدار
+        required: false
+        type: string
+      sort_order:
+        description: ترتيب التطبيق — الرقم الأصغر يظهر أولاً
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: amaryt-store-catalog
+  cancel-in-progress: false
+
+jobs:
+  manage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: جلب المستودع
+        uses: actions/checkout@v4
+
+      - name: تحديث apps.json
+        env:
+          OPERATION: ${{ inputs.operation }}
+          BUNDLE_IDENTIFIER: ${{ inputs.bundle_identifier }}
+          APP_NAME: ${{ inputs.name }}
+          SUBTITLE: ${{ inputs.subtitle }}
+          DEVELOPER_NAME: ${{ inputs.developer_name }}
+          CATEGORY: ${{ inputs.category }}
+          DESCRIPTION: ${{ inputs.description }}
+          ICON_URL: ${{ inputs.icon_url }}
+          BANNER_URL: ${{ inputs.banner_url }}
+          TINT_COLOR: ${{ inputs.tint_color }}
+          VERSION: ${{ inputs.version }}
+          DOWNLOAD_URL: ${{ inputs.download_url }}
+          RELEASE_NOTES: ${{ inputs.release_notes }}
+          SORT_ORDER: ${{ inputs.sort_order }}
+        run: |
+          python3 <<'PY'
+          import json
+          import os
+          import re
+          import sys
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          path = Path("apps.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          if not isinstance(data.get("apps"), list):
+              raise SystemExit("خطأ: apps.json لا يحتوي على مصفوفة apps صالحة.")
+
+          op = os.environ["OPERATION"]
+          bundle = os.environ["BUNDLE_IDENTIFIER"].strip()
+          if not bundle:
+              raise SystemExit("يجب إدخال Bundle Identifier.")
+
+          apps = data["apps"]
+          matches = [i for i, app in enumerate(apps)
+                     if app.get("bundleIdentifier") == bundle]
+
+          if len(matches) > 1:
+              raise SystemExit("يوجد أكثر من تطبيق بنفس Bundle Identifier؛ أصلح التكرار أولاً.")
+
+          fields = {
+              "name": "APP_NAME",
+              "subtitle": "SUBTITLE",
+              "developerName": "DEVELOPER_NAME",
+              "category": "CATEGORY",
+              "localizedDescription": "DESCRIPTION",
+              "iconURL": "ICON_URL",
+              "bannerURL": "BANNER_URL",
+              "tintColor": "TINT_COLOR",
+          }
+
+          if op == "add":
+              if matches:
+                  raise SystemExit("هذا التطبيق موجود مسبقاً. استخدم update لتعديله.")
+              if not os.environ.get("APP_NAME", "").strip():
+                  raise SystemExit("إضافة تطبيق تتطلب الاسم.")
+              app = {"bundleIdentifier": bundle, "versions": [], "screenshotURLs": []}
+              for key, env_key in fields.items():
+                  value = os.environ.get(env_key, "").strip()
+                  if value:
+                      app[key] = value
+              apps.append(app)
+          else:
+              if not matches:
+                  raise SystemExit("لم يتم العثور على تطبيق بهذا Bundle Identifier.")
+              index = matches[0]
+              app = apps[index]
+              if op == "delete":
+                  del apps[index]
+              elif op == "hide":
+                  app["isHidden"] = True
+              elif op == "show":
+                  app.pop("isHidden", None)
+              elif op == "update":
+                  for key, env_key in fields.items():
+                      value = os.environ.get(env_key, "").strip()
+                      if value:
+                          app[key] = value
+              else:
+                  raise SystemExit("عملية غير معروفة.")
+
+          if op in ("add", "update"):
+              version = os.environ.get("VERSION", "").strip()
+              download = os.environ.get("DOWNLOAD_URL", "").strip()
+              notes = os.environ.get("RELEASE_NOTES", "").strip()
+              if version and not download:
+                  raise SystemExit("أدخل رابط IPA عند إضافة إصدار جديد.")
+              if download and not version:
+                  raise SystemExit("أدخل رقم الإصدار مع رابط IPA.")
+              if download and not re.match(r"^https://", download, re.I):
+                  raise SystemExit("يجب أن يكون رابط IPA رابط HTTPS.")
+              if version and download:
+                  versions = app.setdefault("versions", [])
+                  versions[:] = [v for v in versions if v.get("version") != version]
+                  versions.insert(0, {
+                      "version": version,
+                      "date": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+                      "downloadURL": download,
+                      "localizedDescription": notes
+                  })
+
+              order = os.environ.get("SORT_ORDER", "").strip()
+              if order:
+                  try:
+                      app["sortOrder"] = int(order)
+                  except ValueError:
+                      raise SystemExit("ترتيب التطبيق يجب أن يكون رقماً صحيحاً.")
+
+          if op != "delete":
+              apps.sort(key=lambda item: (
+                  item.get("sortOrder", 1000000),
+                  item.get("name", "").casefold()
+              ))
+
+          path.write_text(
+              json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8"
+          )
+          print(f"تم تجهيز العملية ({op}) للتطبيق: {bundle}")
+          PY
+
+      - name: حفظ التغيير في GitHub
+        run: |
+          if git diff --quiet -- apps.json; then
+            echo "لا توجد تغييرات لحفظها."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps.json
+          git commit -m "Manage AMARYT STORE app catalog"
+          git push
