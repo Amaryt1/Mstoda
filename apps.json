@@ -5,27 +5,6 @@
   "website": "https://github.com/Amaryt1/Mstoda",
   "apps": [
     {
-      "bundleIdentifier": "G.me",
-      "versions": [
-        {
-          "version": "1.0",
-          "date": "2026-11-16T19:03:41Z",
-          "downloadURL": "https://github.com/WuXu1/WuXu1.github.io/releases/download/Latest/PostBox.v0.8.1.ipa",
-          "localizedDescription": "تعديل الحب"
-        }
-      ],
-      "screenshotURLs": [],
-      "name": "AMARYT",
-      "subtitle": "السلام عليكم ورحمة الله وبركاته",
-      "developerName": "عموري",
-      "category": "العاب",
-      "localizedDescription": "السلام عليكم ورحمة الله وبركاته شلزنك من خلال في عمل لي مودات إلى قناة في قسم الاعدادات في",
-      "iconURL": "https://i.ibb.co/dsKD4wm2/IMG-20260812-132110-926.jpg",
-      "bannerURL": "https://i.ibb.co/wr4XFVBB/Picsart-26-07-27-04-50-05-612.jpg",
-      "tintColor": "#4299E1",
-      "sortOrder": 2
-    },
-    {
       "bundleIdentifier": "com.guohua.ciner",
       "versions": [
         {
