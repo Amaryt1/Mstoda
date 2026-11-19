@@ -145,8 +145,7 @@ async function sendCode(request, env) {
       from:env.RESEND_FROM, to:[env.ADMIN_EMAIL],
       subject:"رمز دخول AMARYT Admin",
       text:"رمز الدخول المؤقت إلى AMARYT Admin: " + code +
-           "
-صالح لمدة خمس دقائق. إذا لم تطلبه، تجاهل الرسالة."
+           "\nصالح لمدة خمس دقائق. إذا لم تطلبه، تجاهل الرسالة."
     })
   }).catch(() => null);
   if (!mail || !mail.ok) {
