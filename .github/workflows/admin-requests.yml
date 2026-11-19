@@ -1,0 +1,64 @@
+name: AMARYT Admin | Owner requests
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: amaryt-admin-catalog
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    # GitHub authenticates issue creators; account ID is not user-provided.
+    if: >-
+      github.repository == 'Amaryt1/Mstoda' &&
+      github.event.issue.user.id == 190318829 &&
+      !github.event.issue.pull_request
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - name: Checkout default branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+
+      - name: Test catalog administrator
+        run: python3 -m unittest discover -s tests -p 'test_admin_request.py' -v
+
+      - name: Validate authenticated request and update catalog
+        run: python3 scripts/admin_request.py
+
+      - name: Commit authorized changes
+        if: success()
+        run: |
+          if git diff --quiet -- apps.json; then
+            echo "No catalog differences."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps.json
+          git commit -m "AMARYT Admin: apply owner-approved issue #${{ github.event.issue.number }}"
+          git push origin HEAD:main
+
+      - name: Report result to request issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          RESULT: ${{ job.status }}
+        run: |
+          if [ "$RESULT" = "success" ]; then
+            gh issue comment "$ISSUE_NUMBER" --body "✅ تم فحص الطلب وتطبيق التغيير على سجل التطبيقات في GitHub. حدّث لوحة الإدارة لرؤية النتيجة."
+            gh issue close "$ISSUE_NUMBER" --reason completed
+          else
+            gh issue comment "$ISSUE_NUMBER" --body "❌ لم يُطبق التغيير. راجع سجل GitHub Actions لمعرفة سبب الرفض أو الخطأ."
+          fi
