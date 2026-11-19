@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#090f1e">
+  <meta name="description" content="AMARYT Admin — لوحة إدارة تطبيقات AMARYT STORE عبر GitHub">
+  <title>AMARYT Admin | إدارة المتجر</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">A</div>
+        <div><strong>AMARYT <span>ADMIN</span></strong><small>لوحة إدارة المتجر</small></div>
+      </div>
+      <nav class="side-nav" aria-label="أقسام لوحة الإدارة">
+        <button type="button" data-section="all" class="nav-item active"><span>▦</span> جميع التطبيقات</button>
+        <button type="button" data-section="published" class="nav-item"><span>✓</span> المنشورة</button>
+        <button type="button" data-section="hidden" class="nav-item"><span>◌</span> المخفية والمسودات</button>
+      </nav>
+      <div class="side-links">
+        <a href="https://github.com/Amaryt1/Mstoda/actions" target="_blank" rel="noopener noreferrer">↗ سجل العمليات</a>
+        <a href="https://github.com/Amaryt1/Mstoda/issues" target="_blank" rel="noopener noreferrer">↗ طلبات الإدارة</a>
+        <a href="https://github.com/Amaryt1/Mstoda" target="_blank" rel="noopener noreferrer">↗ المستودع</a>
+      </div>
+      <div class="security-note">🔒 النشر والتعديل متاحان فقط لمالك مستودع GitHub بعد تسجيل الدخول إليه.</div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div><div class="eyebrow">GITHUB-POWERED CATALOG</div><h1>إدارة التطبيقات</h1><p class="muted">تحكم بالتطبيقات وإصداراتها وصورها من لوحة واحدة.</p></div>
+        <div class="top-actions">
+          <span id="syncStatus" class="sync">جارٍ تحميل البيانات…</span>
+          <button id="refreshBtn" class="btn ghost" type="button">↻ تحديث</button>
+          <a class="btn github" href="https://github.com/login" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        </div>
+      </header>
+      <section class="stats" aria-label="إحصائيات">
+        <article class="stat"><span>إجمالي التطبيقات</span><strong id="statTotal">—</strong><small>المنشورة والمخفية</small></article>
+        <article class="stat"><span>التطبيقات المنشورة</span><strong id="statPublished">—</strong><small>تظهر في قسم جديد</small></article>
+        <article class="stat"><span>المخفية والمسودات</span><strong id="statHidden">—</strong><small>لا تظهر في المتجر</small></article>
+        <article class="stat"><span>تحتاج صور شاشة</span><strong id="statMissing">—</strong><small>أقل من خمس صور</small></article>
+      </section>
+      <section class="catalog-panel">
+        <div class="panel-heading">
+          <div><h2>كتالوج التطبيقات</h2><p id="resultCount" class="muted">جارٍ التحميل…</p></div>
+          <button id="newAppBtn" class="btn primary" type="button">+ إضافة تطبيق</button>
+        </div>
+        <div class="filters">
+          <label class="search-wrap"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="ابحث بالاسم أو Bundle ID أو المطوّر…" autocomplete="off" aria-label="بحث التطبيقات"></label>
+          <select id="categoryFilter" aria-label="تصفية الفئة"><option value="">كل الفئات</option></select>
+          <select id="orderFilter" aria-label="الترتيب"><option value="order">ترتيب المتجر</option><option value="name">الاسم</option><option value="newest">أحدث إصدار</option></select>
+          <button id="exportBtn" type="button" class="btn ghost">↓ تصدير JSON</button>
+        </div>
+        <div id="bulkBar" class="bulk-bar" hidden>
+          <strong id="selectedCount">0 محدد</strong>
+          <button id="bulkHideBtn" class="btn ghost" type="button">إخفاء</button>
+          <button id="bulkShowBtn" class="btn ghost" type="button">إظهار</button>
+          <button id="bulkCategoryBtn" class="btn ghost" type="button">تغيير الفئة</button>
+          <button id="bulkDeleteBtn" class="btn danger" type="button">حذف</button>
+          <button id="clearSelectionBtn" class="btn text-btn" type="button">إلغاء التحديد</button>
+        </div>
+        <div id="list" class="app-grid" aria-live="polite">
+          <div class="empty">جارٍ تحميل التطبيقات من GitHub…</div>
+        </div>
+        <div class="pagination"><button id="prevBtn" class="btn ghost" type="button">السابق</button><span id="pageInfo">—</span><button id="nextBtn" class="btn ghost" type="button">التالي</button></div>
+      </section>
+      <footer class="footer">AMARYT STORE · GitHub Pages + GitHub Actions · لا تُخزّن كلمة مرور أو رمز وصول داخل الموقع.</footer>
+    </main>
+  </div>
+  <dialog id="editorDialog" class="dialog">
+    <form id="editorForm">
+      <header class="dialog-heading"><div><div class="eyebrow">APP EDITOR</div><h2 id="editorTitle">إضافة تطبيق</h2></div><button type="button" class="close" data-close="editorDialog" aria-label="إغلاق">×</button></header>
+      <div class="dialog-body">
+        <div class="form-grid">
+          <label>اسم التطبيق <em>*</em><input name="name" required maxlength="160" placeholder="HiTV"></label>
+          <label>Bundle Identifier <em>*</em><input name="bundleIdentifier" dir="ltr" required maxlength="240" pattern="[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)+" placeholder="com.example.app"></label>
+          <label>العنوان المختصر<input name="subtitle" maxlength="350" placeholder="وصف قصير يظهر تحت الاسم"></label>
+          <label>المطوّر<input name="developerName" maxlength="160" placeholder="اسم المطور"></label>
+          <label>الفئة<input name="category" maxlength="100" list="categoryOptions" placeholder="أفلام، ألعاب…"><datalist id="categoryOptions"></datalist></label>
+          <label>ترتيب الظهور<input name="sortOrder" type="number" min="0" max="999999" placeholder="رقم أصغر = ظهور أبكر"></label>
+          <label>رابط الأيقونة<input name="iconURL" dir="ltr" type="url" placeholder="https://…"></label>
+          <label>رابط البنر<input name="bannerURL" dir="ltr" type="url" placeholder="https://…"></label>
+          <label>اللون بصيغة HEX<input name="tintColor" dir="ltr" maxlength="9" placeholder="4299E1"></label>
+          <label id="visibilityLabel">حالة الإضافة<select name="visibility"><option value="published">نشر في المتجر</option><option value="hidden">حفظ كمسودة مخفية</option></select></label>
+        </div>
+        <label class="wide">وصف التطبيق<textarea name="localizedDescription" rows="4" maxlength="12000" placeholder="معلومات التطبيق ومميزاته"></textarea></label>
+        <label class="wide">روابط لقطات الشاشة (حد أقصى خمس صور — رابط بكل سطر)<textarea name="screenshotURLs" rows="4" placeholder="https://example.com/screenshot1.jpg"></textarea></label>
+        <div id="existingRelease" class="existing-release"></div>
+        <fieldset class="release"><legend>إضافة إصدار جديد أو تحديث إصدار</legend><p class="muted">اترك حقول الإصدار فارغة عند تعديل المعلومات فقط. الإصدارات القديمة محفوظة.</p>
+          <div class="form-grid"><label>الإصدار<input name="version" maxlength="90" placeholder="1.0.0"></label><label>رابط IPA المباشر<input name="downloadURL" dir="ltr" type="url" placeholder="https://…/app.ipa"></label></div>
+          <label class="wide">ما الجديد في الإصدار<textarea name="releaseNotes" rows="2" maxlength="6000"></textarea></label>
+        </fieldset>
+      </div>
+      <footer class="dialog-footer"><button type="button" class="btn ghost" data-close="editorDialog">إلغاء</button><button type="submit" class="btn primary">متابعة الحفظ عبر GitHub ↗</button></footer>
+    </form>
+  </dialog>
+  <dialog id="requestDialog" class="dialog request-dialog">
+    <header class="dialog-heading"><div><div class="eyebrow">GITHUB VERIFIED WRITE</div><h2>مراجعة طلب التعديل</h2></div><button type="button" class="close" data-close="requestDialog" aria-label="إغلاق">×</button></header>
+    <div class="dialog-body">
+      <p>لأمان حسابك، الضغط على الزر يفتح GitHub لتسجيل الدخول ونشر الطلب. بعد النشر يتحقق GitHub Actions من هوية مالك المستودع ثم يُحدّث <code>apps.json</code> تلقائيًا.</p>
+      <p class="warning" id="requestWarning" hidden>الطلب طويل. انسخ النص أدناه والصقه في متن GitHub Issue الجديد قبل إرساله.</p>
+      <textarea id="requestBody" readonly dir="ltr" rows="7" aria-label="نص طلب GitHub"></textarea>
+    </div>
+    <footer class="dialog-footer"><button id="copyRequestBtn" class="btn ghost" type="button">نسخ نص الطلب</button><button id="openRequestBtn" class="btn primary" type="button">فتح طلب GitHub ↗</button></footer>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
