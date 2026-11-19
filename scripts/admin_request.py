@@ -103,6 +103,7 @@ def validate_release(release):
 def parse_issue(event, repository):
     require(repository == REPO, "مستودع غير مصرح به")
     issue = event.get("issue") or {}
+    require(issue.get("state", "open") == "open", "الطلب مغلق أو تم تنفيذه سابقًا")
     require((issue.get("user") or {}).get("id") == OWNER_ID, "مالك الحساب فقط يستطيع الإدارة")
     require(not issue.get("pull_request"), "لا نعالج طلبات الدمج")
     body = issue.get("body") or ""

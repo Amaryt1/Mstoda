@@ -316,10 +316,10 @@ $("openRequestBtn").addEventListener("click", async () => {
     window.open(BASE + "/issues/new" + title, "_blank", "noopener");
     try { await navigator.clipboard.writeText($("requestBody").value); }
     catch { $("requestBody").focus(); $("requestBody").select(); }
-    toast("لأن الطلب طويل، الصق نص الطلب المنسوخ في مربع وصف GitHub Issue ثم اضغط Submit.");
+    toast("ألصق الطلب في GitHub Issue وأرسله، ثم أكّده من GitHub Actions برقم الطلب؛ التعديل لا يتم قبل التأكيد.");
   } else {
     window.open(full, "_blank", "noopener");
-    toast("راجع الطلب في GitHub واضغط Submit new issue. بعدها حدّث اللوحة لمشاهدة التغيير.");
+    toast("بعد إنشاء Issue، افتح GitHub Actions ← Confirm owner request وأدخل رقم الطلب ثم اضغط Run workflow؛ بعدها حدّث اللوحة.");
   }
 });
 loadData();

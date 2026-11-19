@@ -1,0 +1,106 @@
+name: AMARYT Admin | Confirm owner request
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "رقم طلب الإدارة المفتوح في GitHub Issues"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: amaryt-store-catalog
+  cancel-in-progress: false
+
+jobs:
+  confirm-and-apply:
+    # Server-side GitHub account ID, never a browser-supplied user name.
+    if: >-
+      github.repository == 'Amaryt1/Mstoda' &&
+      github.actor_id == '190318829'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - name: Checkout current catalog from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+
+      - name: Verify latest catalog editor tests
+        run: python3 -m unittest discover -s tests -p 'test_admin_request.py' -v
+
+      - name: Fetch owner issue from GitHub and independently verify origin
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+          ACTOR_ID: ${{ github.actor_id }}
+        run: |
+          if [[ ! "$ISSUE_NUMBER" =~ ^[1-9][0-9]{0,8}$ ]]; then
+            echo "::error::Issue number must be a positive integer."
+            exit 1
+          fi
+          if [[ "$ACTOR_ID" != "190318829" ]]; then
+            echo "::error::Only the repository owner can confirm this request."
+            exit 1
+          fi
+          gh api "repos/Amaryt1/Mstoda/issues/$ISSUE_NUMBER" > "$RUNNER_TEMP/amaryt-original-issue.json"
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          issue = json.loads((Path(os.environ['RUNNER_TEMP']) / 'amaryt-original-issue.json').read_text())
+          if issue.get('state') != 'open':
+              raise SystemExit('Issue must be open; closed requests cannot be replayed.')
+          if issue.get('pull_request'):
+              raise SystemExit('Pull requests cannot be submitted as catalog requests.')
+          if (issue.get('user') or {}).get('id') != 190318829:
+              raise SystemExit('Issue must be created by the actual GitHub owner account.')
+          event = {'issue': issue}
+          (Path(os.environ['RUNNER_TEMP']) / 'amaryt-confirmed-event.json').write_text(
+              json.dumps(event, ensure_ascii=False), encoding='utf-8')
+          print('Verified original GitHub issue creator and open state.')
+          PY
+
+      - name: Parse and apply validated catalog request
+        env:
+          GITHUB_EVENT_PATH: ${{ runner.temp }}/amaryt-confirmed-event.json
+        run: python3 scripts/admin_request.py
+
+      - name: Commit only the approved catalog file
+        run: |
+          if git diff --quiet -- apps.json; then
+            echo "Request did not change apps.json."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- apps.json
+          git commit -m "AMARYT Admin: manually confirm issue #${{ inputs.issue_number }}"
+          git push origin HEAD:main
+
+      - name: Close approved request after successful update
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --repo "Amaryt1/Mstoda" \
+            --body "✅ تم تأكيد العملية من مالك GitHub وتنفيذها بنجاح. حدّث لوحة AMARYT Admin لرؤية البيانات."
+          gh issue close "$ISSUE_NUMBER" --repo "Amaryt1/Mstoda" --reason completed
+
+      - name: Explain failed confirmation
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          if [[ "$ISSUE_NUMBER" =~ ^[1-9][0-9]{0,8}$ ]]; then
+            gh issue comment "$ISSUE_NUMBER" --repo "Amaryt1/Mstoda" \
+              --body "❌ لم يكتمل التأكيد. لا تعتمد على نجاح هذا الطلب؛ راجع سجل GitHub Actions لمعرفة الخطأ." || true
+          fi
