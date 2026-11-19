@@ -37,6 +37,12 @@ class AdminRequestTests(unittest.TestCase):
         with self.assertRaises(admin.InvalidRequest):
             admin.parse_issue(self.issue(author=999), admin.REPO)
 
+    def test_closed_issue_rejected_to_prevent_replay(self):
+        event = self.issue()
+        event["issue"]["state"] = "closed"
+        with self.assertRaises(admin.InvalidRequest):
+            admin.parse_issue(event, admin.REPO)
+
     def test_wrong_repo_rejected(self):
         with self.assertRaises(admin.InvalidRequest):
             admin.parse_issue(self.issue(), "other/repo")
