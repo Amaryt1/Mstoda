@@ -218,6 +218,15 @@ export default {
       }
       if (request.method!=="GET" && request.method!=="HEAD")
         return responseJSON({message:"غير مسموح."},405);
+      if (path==="/catalog") {
+        const upstream=await fetch("https://raw.githubusercontent.com/Amaryt1/Mstoda/main/apps.json", {
+          headers:{"Accept":"application/json","Cache-Control":"no-cache"}
+        });
+        if (!upstream.ok) return responseJSON({message:"تعذر قراءة سجل التطبيقات."},502);
+        const data=await upstream.text();
+        if (data.length>8_000_000) return responseJSON({message:"سجل التطبيقات كبير جدًا."},502);
+        return responseText(data,200,"application/json; charset=utf-8");
+      }
       const asset=await env.ASSETS.fetch(request);
       return withHeaders(asset);
     } catch (err) {
