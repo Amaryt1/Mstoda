@@ -1,10 +1,9 @@
-name: AMARYT Admin | Publish GitHub Pages
+name: AMARYT STORE | Public Pages notice (Admin is private)
 
 on:
   push:
     branches: [main]
     paths:
-      - "admin/**"
       - ".github/workflows/admin-pages.yml"
   workflow_dispatch:
 
@@ -24,24 +23,38 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout public repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Prepare static dashboard
+      - name: Publish a neutral page, NEVER the management dashboard
         run: |
-          mkdir -p _site/admin
-          cp admin/index.html admin/styles.css admin/app.js _site/admin/
-          printf '%s\n' '<!DOCTYPE html><html lang="ar" dir="rtl"><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=admin/"><title>AMARYT Admin</title><a href="admin/">فتح لوحة الإدارة</a></html>' > _site/index.html
+          mkdir -p _site
+          cat > _site/index.html <<'HTML'
+          <!doctype html>
+          <html lang="ar" dir="rtl">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width,initial-scale=1">
+            <meta name="robots" content="noindex,nofollow">
+            <title>AMARYT STORE</title>
+            <style>
+              body { margin:0; background:#091321; color:#eefaff; min-height:100vh;
+                     display:grid; place-items:center; font-family:system-ui,Arial,sans-serif; text-align:center; }
+              main { max-width:550px; padding:34px; }
+              h1 { color:#5be9d5; }
+              p { line-height:1.9; color:#a5bfd0; }
+            </style>
+          </head>
+          <body><main><h1>AMARYT STORE</h1>
+          <p>لوحة الإدارة لم تعد منشورة على GitHub Pages.
+          يمكن لمالك المستودع فتح لوحة الإدارة من منفذ GitHub Codespaces الخاص.</p>
+          </main></body></html>
+          HTML
           touch _site/.nojekyll
+          # Intentionally DO NOT copy admin/index.html, scripts or any catalog data.
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload site
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
-
-      - name: Deploy site
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
