@@ -280,6 +280,11 @@ $("searchInput").addEventListener("input", (e) => { state.query = e.target.value
 $("categoryFilter").addEventListener("change", (e) => { state.category = e.target.value; state.page = 0; render(); });
 $("orderFilter").addEventListener("change", (e) => { state.order = e.target.value; state.page = 0; render(); });
 $("refreshBtn").addEventListener("click", loadData);
+$("logoutBtn").addEventListener("click", async () => {
+  try {
+    await fetch("/auth/logout", { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin", body: "{}" });
+  } finally { window.location.replace("/signin"); }
+});
 $("newAppBtn").addEventListener("click", () => openEditor());
 $("exportBtn").addEventListener("click", exportJSON);
 $("prevBtn").addEventListener("click", () => { state.page--; render(); });
