@@ -20,11 +20,13 @@ inside Feather needs to change.
 The dashboard is a **static public website**, because this is a public GitHub
 repository. Reading public catalog data is open to all; writing is NOT.
 
-When you click save, the dashboard prepares a JSON request in a new GitHub
-Issue. The user logs into GitHub and explicitly submits it. The workflow
-only writes when GitHub reports the issue creator is the VERIFIED owner
-account ID 190318829 in repository Amaryt1/Mstoda. The backend repeats
-this check and validates every field before editing apps.json.
+When you click save, the dashboard prepares a JSON request in a GitHub Issue.
+This request is ONLY staged. It does NOT modify apps.json automatically.
+The owner must open Actions > AMARYT Admin | Confirm owner request, choose
+Run workflow, and enter that Issue number as a SECOND explicit confirmation.
+Both the Issue author and the manually-triggered workflow actor must be the
+GitHub-verified owner account ID 190318829. The backend validates the request
+before writing apps.json. Closed requests cannot be executed again.
 
 No PAT, OAuth client secret, signing certificate, password or write token is
 stored in the dashboard. Other users could view the public site and submit
@@ -33,15 +35,15 @@ issues, but their issues cannot execute the catalog-writing job.
 Repository administrators with direct write access can still change code
 and workflows, so do not give such access to untrusted people.
 
-## Activate the dashboard
+## Open the dashboard
 
-1. Review and merge the feature/amaryt-admin-panel PR into Mstoda/main.
-2. Open Mstoda > Settings > Pages.
-3. In Build and deployment, select Source: GitHub Actions.
-4. From Actions, run AMARYT Admin | Publish GitHub Pages if necessary.
-5. Open the Pages address (normally https://amaryt1.github.io/Mstoda/admin/).
+The dashboard is published on GitHub Pages at:
+https://amaryt1.github.io/Mstoda/
 
-The website is NOT live until GitHub Pages is enabled and deployed.
+GitHub Pages for this public repository is PUBLIC and cannot enforce a
+GitHub sign-in before viewing the interface. GitHub-only verification protects
+all modifications, NOT visibility. The original Mstoda/apps.json and IPA links
+remain public, as requested. Do not represent the dashboard as private.
 
 ## Change an app
 
@@ -49,9 +51,13 @@ The website is NOT live until GitHub Pages is enabled and deployed.
 2. Use Add, Edit or another action. Published new apps need a version
    and HTTPS IPA download URL. Hidden drafts need no release yet.
 3. Choose Save via GitHub, review the data, and click Open GitHub request.
-4. In GitHub, log in as the owner and select Submit new issue.
-5. GitHub Actions validates the request, updates apps.json and adds a
-   comment to the request issue. Refresh the panel to see the change.
+4. In GitHub, log in as the owner and select Submit new issue. No catalog
+   change happens at this first step.
+5. Open https://github.com/Amaryt1/Mstoda/actions/workflows/admin-confirm.yml
+6. Click Run workflow; enter the Issue number; click Run workflow again.
+   The server checks the authenticated GitHub actor and Issue author.
+7. On success GitHub Actions updates apps.json and closes the Issue.
+   Refresh the dashboard to see the change.
 
 For very large requests, the panel copies the JSON text and opens a blank
 issue; paste the text before clicking Submit.
@@ -64,7 +70,7 @@ is stored in the browser to upload binary files.
 
 Run these commands from the repository root:
 
-    python3 -m unittest discover -s tests -p test_admin_request.py -v
+    python3 -m unittest discover -s tests -p 'test_admin_*.py' -v
     python3 -m py_compile scripts/admin_request.py
     node --check admin/app.js
 
@@ -81,3 +87,11 @@ apps.json feed.
 
 The original manage-app.yml GitHub Actions workflow remains available as
 a fallback administration path.
+
+## Email verification / external services
+
+No email address, mail delivery service, Cloudflare account, OAuth application,
+or personal access token is required for the two-step GitHub workflow.
+Turn on two-factor authentication in your GitHub account settings.
+
+The experimental Cloudflare email-OTP proposal is not part of this release.
