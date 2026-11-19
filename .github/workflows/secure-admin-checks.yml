@@ -1,0 +1,43 @@
+name: AMARYT Admin | Email OTP security checks
+
+on:
+  push:
+    paths:
+      - "secure-admin/**"
+      - ".github/workflows/secure-admin-checks.yml"
+  pull_request:
+    paths:
+      - "secure-admin/**"
+      - ".github/workflows/secure-admin-checks.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  security-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate Cloudflare Worker JS
+        run: node --check secure-admin/src/worker.js
+      - name: Test email privacy and access gateway
+        run: node --test secure-admin/tests/*.test.mjs
+      - name: Validate database schema and config
+        run: |
+          python3 - <<'PY'
+          import json, sqlite3
+          from pathlib import Path
+          config = json.loads(Path("secure-admin/wrangler.jsonc").read_text())
+          assert config["assets"]["run_worker_first"] is True
+          assert config["assets"]["directory"] == "../admin"
+          db = sqlite3.connect(":memory:")
+          db.executescript(Path("secure-admin/schema.sql").read_text())
+          names = {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+          assert {"challenges","sessions","rate_limits"} <= names
+          print("OTP schema and Worker asset gate are valid")
+          PY
