@@ -4,15 +4,20 @@ on:
   push:
     branches:
       - feature/amaryt-admin-panel
+      - feature/amaryt-github-confirmation
     paths:
       - "scripts/admin_request.py"
-      - "tests/test_admin_request.py"
+      - "tests/test_admin_*.py"
+      - ".github/workflows/admin-requests.yml"
+      - ".github/workflows/admin-confirm.yml"
       - "admin/**"
       - ".github/workflows/admin-ci.yml"
   pull_request:
     paths:
       - "scripts/admin_request.py"
-      - "tests/test_admin_request.py"
+      - "tests/test_admin_*.py"
+      - ".github/workflows/admin-requests.yml"
+      - ".github/workflows/admin-confirm.yml"
       - "admin/**"
       - ".github/workflows/admin-ci.yml"
 
@@ -30,7 +35,7 @@ jobs:
       - name: Check Python syntax
         run: python3 -m py_compile scripts/admin_request.py
       - name: Run administration tests
-        run: python3 -m unittest discover -s tests -p "test_admin_request.py" -v
+        run: python3 -m unittest discover -s tests -p "test_admin_*.py" -v
       - name: Validate current catalog without changing it
         run: |
           python3 - <<'PY'
