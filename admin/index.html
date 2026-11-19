@@ -102,7 +102,7 @@
   <dialog id="requestDialog" class="dialog request-dialog">
     <header class="dialog-heading"><div><div class="eyebrow">GITHUB VERIFIED WRITE</div><h2>مراجعة طلب التعديل</h2></div><button type="button" class="close" data-close="requestDialog" aria-label="إغلاق">×</button></header>
     <div class="dialog-body">
-      <p>لأمان حسابك، الضغط على الزر يفتح GitHub لتسجيل الدخول ونشر الطلب. بعد النشر يتحقق GitHub Actions من هوية مالك المستودع ثم يُحدّث <code>apps.json</code> تلقائيًا.</p>
+      <p>لأمان حسابك، سيتم حفظ الطلب أولًا في GitHub دون تنفيذ التعديل. بعدها تحتاج تأكيده مرة ثانية من <strong>GitHub Actions</strong> بحساب مالك المستودع، ثم يتحدّث <code>apps.json</code>. لا نحتاج بريدًا أو خدمة خارجية.</p>
       <p class="warning" id="requestWarning" hidden>الطلب طويل. انسخ النص أدناه والصقه في متن GitHub Issue الجديد قبل إرساله.</p>
       <textarea id="requestBody" readonly dir="ltr" rows="7" aria-label="نص طلب GitHub"></textarea>
     </div>
