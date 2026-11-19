@@ -1,97 +1,80 @@
-# AMARYT Admin — GitHub-only application dashboard
+# AMARYT Admin — لوحة الإدارة عبر GitHub Codespaces الخاص
 
-An Arabic, mobile-friendly catalog administration panel for Amaryt1/Mstoda.
-The iOS store continues to read the same public apps.json feed; nothing
-inside Feather needs to change.
+لوحة إدارة تطبيقات **Amaryt1/Mstoda**، تعمل عبر GitHub فقط، من دون بريد تحقق
+أو Cloudflare أو VPS أو مفاتيح وصول في كود المتصفح.
 
-## Features in this first release
+## طريقة التشغيل الخاصة
 
-- Published, hidden and draft lists, with search, sorting and category filtering.
-- Add, edit, duplicate, hide, show and delete catalog entries.
-- Set displayed ordering and move apps up/down.
-- Add or replace releases with HTTPS IPA URLs and notes; preserve prior releases.
-- Manage icon, banner and up to five screenshot URLs per app.
-- Bulk hide, show, delete and recategorize (up to 100 apps per request).
-- Export full JSON for local backups; every change also has Git history.
-- Responsive GitHub Pages frontend; no external backend or embedded credentials.
+1. سجّل الدخول إلى حساب GitHub المالك للمستودع.
+2. افتح https://github.com/Amaryt1/Mstoda
+3. اضغط **Code → Codespaces → Create codespace on main**.
+4. انتظر فتح بيئة Codespaces؛ يبدأ خادم AMARYT Admin تلقائيًا بمنفذ **8765**.
+5. افتح علامة **PORTS** في Codespaces وتحقق من أن Visibility للمنفذ
+   **8765 = Private**، وليس Public أو Organization.
+6. اختر **Open in Browser** على نفس المنفذ للدخول إلى اللوحة.
+7. إذا لم يفتح تلقائيًا، شغّل في الطرفية:
+   `bash .devcontainer/start-admin.sh`، ثم افتح المنفذ من PORTS.
 
-## Security model
+**مهم:** رابط Codespace خاص بجلسة Codespaces ويختلف بين البيئات، وقد يتوقف
+عند خمول البيئة. لا يوجد هنا رابط موقع عام دائم للوحة الإدارة.
 
-The dashboard is a **static public website**, because this is a public GitHub
-repository. Reading public catalog data is open to all; writing is NOT.
+GitHub يفرض تسجيل الدخول للوصول إلى منفذ Codespaces الخاص. لا تغيّر
+Visibility إلى Public؛ هذا يُلغي حماية الدخول. شغّل المصادقة الثنائية أو Passkey
+على حساب GitHub لرفع مستوى الأمان.
 
-When you click save, the dashboard prepares a JSON request in a GitHub Issue.
-This request is ONLY staged. It does NOT modify apps.json automatically.
-The owner must open Actions > AMARYT Admin | Confirm owner request, choose
-Run workflow, and enter that Issue number as a SECOND explicit confirmation.
-Both the Issue author and the manually-triggered workflow actor must be the
-GitHub-verified owner account ID 190318829. The backend validates the request
-before writing apps.json. Closed requests cannot be executed again.
+## حماية عرض لوحة الإدارة
 
-No PAT, OAuth client secret, signing certificate, password or write token is
-stored in the dashboard. Other users could view the public site and submit
-issues, but their issues cannot execute the catalog-writing job.
+- الخادم مبرمج بلغة Python القياسية ويستمع إلى localhost داخل Codespaces.
+- لا يعرض إلا: `/`، `index.html`، `app.js` و`styles.css`.
+- لا يقدّم ملفات `.git` أو `apps.json` أو سكربتات الإدارة أو أي ملف آخر.
+- لا توجد كلمات مرور أو بيانات مستخدم مخزنة داخل الواجهة.
+- الدخول إلى المنفذ الخاص مصادق عليه بواسطة GitHub Codespaces.
+- عند توقف Codespace لا تظل واجهة الإدارة عاملة.
 
-Repository administrators with direct write access can still change code
-and workflows, so do not give such access to untrusted people.
+**التنبيه الأساسي:** مستودع `Mstoda` عام حسب طلب المالك؛ ملف `apps.json`
+وروابط IPA الموجودة داخله ما زالت عامة. الحماية تخص **الوصول إلى لوحة الإدارة
+وإجراء التعديلات** ولا تجعل روابط IPA أو الكود المنشور خاصًا. أي شخص يستطيع
+مشاهدة الملفات العامة مباشرة من GitHub.
 
-## Open the dashboard
+تم تعديل workflow الخاص بـ GitHub Pages لنشر صفحة تعريفية خالية من الواجهة
+والبيانات، وليس لوحة الإدارة. يمكن أيضًا إلغاء نشر Pages بالكامل من
+**Settings → Pages → Unpublish site**؛ لا تؤثر هذه العملية على قسم «جديد».
 
-The dashboard is published on GitHub Pages at:
-https://amaryt1.github.io/Mstoda/
+## إدارة التطبيقات والتأكيد
 
-GitHub Pages for this public repository is PUBLIC and cannot enforce a
-GitHub sign-in before viewing the interface. GitHub-only verification protects
-all modifications, NOT visibility. The original Mstoda/apps.json and IPA links
-remain public, as requested. Do not represent the dashboard as private.
+تشمل اللوحة:
+- إضافة، تعديل، نسخ البيانات، إخفاء، إظهار، حذف.
+- ترتيب ظهور التطبيقات وتعديل الفئات.
+- إضافة إصدار جديد، رابط IPA، الأيقونات والبنرات وخمس صور شاشة.
+- إدارة جماعية حتى 100 تطبيق لكل طلب.
+- البحث والتصفية وتصدير نسخة احتياطية JSON.
 
-## Change an app
+عملية التعديل نفسها لها **تأكيدان عبر حساب GitHub**:
+1. اختَر التغيير من لوحة Codespaces الخاصة، وافتح GitHub Issue
+   باستخدام زر الحفظ، ثم أرسل الطلب من حساب المالك.
+2. افتح https://github.com/Amaryt1/Mstoda/actions/workflows/admin-confirm.yml
+3. اضغط **Run workflow**، وأدخل رقم Issue، ثم اضغط **Run workflow** للتأكيد.
+4. بعد تحقق GitHub من مالك الطلب ومنفّذ التأكيد وتحقق الكود من البيانات،
+   يُحدَّث `apps.json` على `main`، ويُغلق الطلب.
+5. حدّث لوحة الإدارة لرؤية التغيير.
 
-1. Open AMARYT Admin and load the live catalog.
-2. Use Add, Edit or another action. Published new apps need a version
-   and HTTPS IPA download URL. Hidden drafts need no release yet.
-3. Choose Save via GitHub, review the data, and click Open GitHub request.
-4. In GitHub, log in as the owner and select Submit new issue. No catalog
-   change happens at this first step.
-5. Open https://github.com/Amaryt1/Mstoda/actions/workflows/admin-confirm.yml
-6. Click Run workflow; enter the Issue number; click Run workflow again.
-   The server checks the authenticated GitHub actor and Issue author.
-7. On success GitHub Actions updates apps.json and closes the Issue.
-   Refresh the dashboard to see the change.
+لا يُنفّذ تعديل في الخطوة الأولى وحدها، ويُرفض الطلب المرسل من حساب غير المالك.
+لا داعي لإرسال مفاتيح GitHub أو كلمات مرور الشهادات.
 
-For very large requests, the panel copies the JSON text and opens a blank
-issue; paste the text before clicking Submit.
+## الاختبارات
 
-Media files are managed via GitHub's normal upload UI for now: the panel
-edits HTTPS icon/banner/screenshot links only. No untrusted access token
-is stored in the browser to upload binary files.
-
-## Validate
-
-Run these commands from the repository root:
-
-    python3 -m unittest discover -s tests -p 'test_admin_*.py' -v
-    python3 -m py_compile scripts/admin_request.py
+    python3 -m unittest discover -s tests -p "test_admin_*.py" -v
+    python3 -m py_compile scripts/run_private_admin.py
     node --check admin/app.js
 
-GitHub Actions checks syntax, tests and compatibility with the existing
-apps.json feed.
+تتضمن الاختبارات منع عرض ملفات المستودع، واختبارات صحة العمليات ومنع تكرار الطلبات
+وتحقق GitHub من الهوية.
 
-## Planned later
+## قيود يجب معرفتها
 
-- Automatic screenshot discovery only from licensed and verified sources.
-- Authenticated binary media uploads without exposed secrets.
-- Optional bulk CSV/JSON import with review, quotas and duplicate detection.
-- Separately managing the larger Feather app catalog, which is not part
-  of this Mstoda feed.
-
-The original manage-app.yml GitHub Actions workflow remains available as
-a fallback administration path.
-
-## Email verification / external services
-
-No email address, mail delivery service, Cloudflare account, OAuth application,
-or personal access token is required for the two-step GitHub workflow.
-Turn on two-factor authentication in your GitHub account settings.
-
-The experimental Cloudflare email-OTP proposal is not part of this release.
+- GitHub Codespaces يقدم حصة مجانية محدودة؛ الاستخدام الطويل قد يستنفد الحصة.
+- Codespaces بيئة تطوير وليست استضافة دائمة؛ قد تتوقف عند الخمول أو إغلاقها.
+- خصوصية المنفذ لا تعني خصوصية المستودع العام أو الروابط المنشورة فيه.
+- لا يمكن فصل مصدر لوحة الإدارة إلى **مستودع خاص مستقل** من دون إنشاء مستودع
+  جديد؛ يمكن نقل ملفات `admin/` و`.devcontainer/` والخادم إلى مستودع خاص
+  مستقبلًا، مع إبقاء `Mstoda/apps.json` عامًا.
