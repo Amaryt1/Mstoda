@@ -1,7 +1,8 @@
 const REPO = "Amaryt1/Mstoda";
 const OWNER = "Amaryt1";
 const BASE = "https://github.com/" + REPO;
-const FEED = "https://raw.githubusercontent.com/" + REPO + "/main/apps.json";
+// The secure Worker verifies the login before returning catalog data.
+const FEED = "/catalog";
 const LIMIT = 40;
 const $ = (id) => document.getElementById(id);
 const state = { data: { apps: [], hiddenApps: [] }, section: "all", query: "", category: "", order: "order", page: 0, selected: new Set(), ready: false };
