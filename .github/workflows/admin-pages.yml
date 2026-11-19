@@ -1,0 +1,47 @@
+name: AMARYT Admin | Publish GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "admin/**"
+      - ".github/workflows/admin-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: amaryt-admin-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout public repository
+        uses: actions/checkout@v4
+
+      - name: Prepare static dashboard
+        run: |
+          mkdir -p _site/admin
+          cp admin/index.html admin/styles.css admin/app.js _site/admin/
+          printf '%s\n' '<!DOCTYPE html><html lang="ar" dir="rtl"><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=admin/"><title>AMARYT Admin</title><a href="admin/">فتح لوحة الإدارة</a></html>' > _site/index.html
+          touch _site/.nojekyll
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy site
+        id: deployment
+        uses: actions/deploy-pages@v4

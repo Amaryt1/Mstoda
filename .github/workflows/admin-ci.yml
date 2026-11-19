@@ -1,0 +1,45 @@
+name: AMARYT Admin | Checks
+
+on:
+  push:
+    branches:
+      - feature/amaryt-admin-panel
+    paths:
+      - "scripts/admin_request.py"
+      - "tests/test_admin_request.py"
+      - "admin/**"
+      - ".github/workflows/admin-ci.yml"
+  pull_request:
+    paths:
+      - "scripts/admin_request.py"
+      - "tests/test_admin_request.py"
+      - "admin/**"
+      - ".github/workflows/admin-ci.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check JavaScript
+        run: node --check admin/app.js
+      - name: Check Python syntax
+        run: python3 -m py_compile scripts/admin_request.py
+      - name: Run administration tests
+        run: python3 -m unittest discover -s tests -p "test_admin_request.py" -v
+      - name: Validate current catalog without changing it
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          sys.path.insert(0, "scripts")
+          from admin_request import validate_catalog
+          with open("apps.json", encoding="utf-8") as f:
+              data = json.load(f)
+          data.setdefault("hiddenApps", [])
+          validate_catalog(data)
+          print("Current catalog is compatible with the admin editor.")
+          PY
