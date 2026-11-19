@@ -24,6 +24,7 @@
         <button type="button" data-section="hidden" class="nav-item"><span>◌</span> المخفية والمسودات</button>
       </nav>
       <div class="side-links">
+        <a href="#storeUpdate">تحديث المتجر</a>
         <a href="https://github.com/Amaryt1/Mstoda/actions" target="_blank" rel="noopener noreferrer">↗ سجل العمليات</a>
         <a href="https://github.com/Amaryt1/Mstoda/issues" target="_blank" rel="noopener noreferrer">↗ طلبات الإدارة</a>
         <a href="https://github.com/Amaryt1/Mstoda" target="_blank" rel="noopener noreferrer">↗ المستودع</a>
@@ -69,6 +70,20 @@
         </div>
         <div class="pagination"><button id="prevBtn" class="btn ghost" type="button">السابق</button><span id="pageInfo">—</span><button id="nextBtn" class="btn ghost" type="button">التالي</button></div>
       </section>
+      <section class="panel" id="storeUpdate">
+        <h2>تحديث المتجر</h2><p id="storePublished" aria-live="polite">جارٍ فحص الإصدار المنشور…</p>
+        <form id="storeForm"><fieldset id="storeFields" disabled><div class="form-grid">
+          <label>رابط IPA من GitHub Releases<input name="url" type="url" dir="ltr" required></label>
+          <label>الإصدار<input name="version" dir="ltr" required></label>
+          <label>رقم البناء (اختياري)<input name="build" dir="ltr"></label>
+          <label>وصف التحديث<textarea name="notes" maxlength="4000"></textarea></label>
+          <label><input name="mandatory" type="checkbox"> تحديث إجباري</label>
+        </div><button class="btn primary">حفظ ونشر عبر GitHub</button>
+        <button class="btn ghost" type="button" id="pauseUpdate">إيقاف الإجبار</button>
+        <button class="btn ghost" type="button" id="undoUpdate">استعادة النشر السابق</button></fieldset></form>
+        <button class="btn ghost" type="button" id="refreshStore">تحديث بيانات النشر</button>
+        <a href="https://t.me/llydl" rel="noopener">التواصل عبر Telegram</a>
+      </section>
       <footer class="footer">AMARYT STORE · GitHub Pages + GitHub Actions · لا تُخزّن كلمة مرور أو رمز وصول داخل الموقع.</footer>
     </main>
   </div>
@@ -102,7 +117,7 @@
   <dialog id="requestDialog" class="dialog request-dialog">
     <header class="dialog-heading"><div><div class="eyebrow">GITHUB VERIFIED WRITE</div><h2>مراجعة طلب التعديل</h2></div><button type="button" class="close" data-close="requestDialog" aria-label="إغلاق">×</button></header>
     <div class="dialog-body">
-      <p>لأمان حسابك، سيتم حفظ الطلب أولًا في GitHub دون تنفيذ التعديل. بعدها تحتاج تأكيده مرة ثانية من <strong>GitHub Actions</strong> بحساب مالك المستودع، ثم يتحدّث <code>apps.json</code>. لا نحتاج بريدًا أو خدمة خارجية.</p>
+      <p>لأمان حسابك، سيتم حفظ الطلب أولًا في GitHub دون تنفيذ التعديل. بعدها تحتاج تأكيده مرة ثانية من <strong>GitHub Actions</strong> بحساب مالك المستودع، ثم يُنشر الملف المتعلق بالطلب. لا نحتاج بريدًا أو خدمة خارجية.</p>
       <p class="warning" id="requestWarning" hidden>الطلب طويل. انسخ النص أدناه والصقه في متن GitHub Issue الجديد قبل إرساله.</p>
       <textarea id="requestBody" readonly dir="ltr" rows="7" aria-label="نص طلب GitHub"></textarea>
     </div>

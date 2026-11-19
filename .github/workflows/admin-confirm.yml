@@ -74,13 +74,13 @@ jobs:
 
       - name: Commit only the approved catalog file
         run: |
-          if git diff --quiet -- apps.json; then
-            echo "Request did not change apps.json."
+          if git diff --quiet -- apps.json store-update.json; then
+            echo "No change to publish."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- apps.json
+          git add -- apps.json store-update.json
           git commit -m "AMARYT Admin: manually confirm issue #${{ inputs.issue_number }}"
           git push origin HEAD:main
 

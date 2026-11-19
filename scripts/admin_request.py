@@ -30,7 +30,7 @@ TEXT_LIMITS = {
 }
 BUNDLE_RE = re.compile(r"^[A-Za-z0-9_-]+(?:\.[A-Za-z0-9_-]+)+$")
 OPS = {
-    "add", "update", "hide", "show", "delete", "move",
+    "store_update", "add", "update", "hide", "show", "delete", "move",
     "bulk_hide", "bulk_show", "bulk_delete", "bulk_category",
 }
 
@@ -249,13 +249,55 @@ def apply(data, request):
     return data
 
 
+def release_digest(repo, tag, url):
+    from urllib.request import Request, urlopen
+    endpoint = f"https://api.github.com/repos/Amaryt1/{repo}/releases/tags/{tag}"
+    with urlopen(Request(endpoint, headers={"Accept": "application/vnd.github+json"}), timeout=20) as response:
+        release = json.load(response)
+    require(not release.get("draft"), "الإصدار مسودة")
+    asset = next((a for a in release["assets"] if a.get("browser_download_url") == url), {})
+    digest = asset.get("digest") or ""
+    require(asset.get("state") == "uploaded" and asset.get("size", 0) > 0 and
+            re.fullmatch(r"sha256:[0-9a-f]{64}", digest), "ملف IPA غير منشور أو بصمته غير متاحة")
+    return digest[7:]
+
+
+def update_store(document, request, lookup=release_digest):
+    require(request.get("revision") == document["revision"], "تغير الإصدار المنشور. أعد تحميل اللوحة.")
+    mode = request.get("mode")
+    current = document["current"]
+    if mode == "rollback":
+        require(document["revision"] > 0, "لا يوجد نشر سابق")
+        value = document["previous"]
+    elif mode == "pause":
+        require(current and current["mandatory"], "التحديث الإجباري غير مفعّل")
+        value = dict(current, mandatory=False)
+    else:
+        require(mode == "publish", "عملية تحديث غير معروفة")
+        value = request["release"].copy()
+        require(set(value) == {"version", "build", "url", "notes", "mandatory"}, "حقول الإصدار غير صالحة")
+        for field in ("version", "build"):
+            require(isinstance(value[field], str) and (field == "build" and value[field] == "" or
+                    re.fullmatch(r"[0-9]{1,9}(?:\.[0-9]{1,9}){0,2}", value[field])), "رقم إصدار أو بناء غير صالح")
+        require(isinstance(value["mandatory"], bool) and isinstance(value["notes"], str)
+                and len(value["notes"]) <= 4000, "بيانات التحديث غير صالحة")
+        match = re.fullmatch(r"https://github\.com/Amaryt1/([A-Za-z0-9_.-]+)/releases/download/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+\.ipa)", value["url"])
+        require(match and all(x not in (".", "..") for x in match.groups()), "استخدم رابط ملف IPA في GitHub Releases بحساب Amaryt1")
+        value["sha256"] = lookup(match[1], match[2], value["url"])
+    return dict(schema=1, revision=document["revision"] + 1, current=value, previous=current)
+
+
 def main():
     try:
         event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text(encoding="utf-8"))
         request = parse_issue(event, os.environ.get("GITHUB_REPOSITORY", ""))
-        path = Path("apps.json")
+        store = request["operation"] == "store_update"
+        path = Path("store-update.json" if store else "apps.json")
         data = json.loads(path.read_text(encoding="utf-8"))
-        apply(data, request)
+        if store:
+            data = update_store(data, request)
+        else:
+            apply(data, request)
         path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(f"AMARYT Admin applied {request['operation']} from owner issue.")
     except (InvalidRequest, ValueError, KeyError, OSError, TypeError) as exc:

@@ -323,3 +323,36 @@ $("openRequestBtn").addEventListener("click", async () => {
   }
 });
 loadData();
+
+let storeRevision;
+async function loadStoreRelease() {
+  $("storeFields").disabled = true;
+  try {
+    const response = await fetch(FEED.replace("/apps.json", "/store-update.json"), {cache: "no-store"});
+    if (!response.ok) throw Error("تعذّر تحميل إعدادات التحديث");
+    const doc = await response.json();
+    const release = doc.current;
+    const fields = $("storeForm").elements;
+    for (const key of ["url", "version", "build", "notes"]) fields.namedItem(key).value = release?.[key] ?? "";
+    fields.namedItem("mandatory").checked = !!release?.mandatory;
+    $("storePublished").textContent = release ? `المنشور: ${release.version} · ${release.build || "بدون رقم بناء"} · ${release.mandatory ? "إجباري" : "غير إجباري"}` : "لا يوجد إصدار منشور";
+    storeRevision = doc.revision;
+    $("storeFields").disabled = false;
+    $("pauseUpdate").disabled = !release?.mandatory;
+    $("undoUpdate").disabled = !doc.revision;
+  } catch (error) { $("storePublished").textContent = error.message; }
+}
+function requestStore(mode, release) {
+  prepareRequest({schema: 1, operation: "store_update", revision: storeRevision, mode, release});
+}
+$("storeForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const fields = event.target.elements;
+  const release = Object.fromEntries(["version", "build", "url", "notes"].map(k => [k, fields.namedItem(k).value.trim()]));
+  release.mandatory = fields.namedItem("mandatory").checked;
+  requestStore("publish", release);
+});
+$("pauseUpdate").onclick = () => requestStore("pause");
+$("undoUpdate").onclick = () => requestStore("rollback");
+$("refreshStore").onclick = loadStoreRelease;
+loadStoreRelease();
