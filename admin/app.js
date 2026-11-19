@@ -311,9 +311,11 @@ $("openRequestBtn").addEventListener("click", async () => {
   const title = "?title=" + encodeURIComponent(requestTitle(pending));
   const full = BASE + "/issues/new" + title + "&body=" + encodeURIComponent($("requestBody").value);
   if (full.length > 5500) {
+    // Open synchronously from the click event so popup blockers do not
+    // suppress the GitHub tab while we await clipboard permission.
+    window.open(BASE + "/issues/new" + title, "_blank", "noopener");
     try { await navigator.clipboard.writeText($("requestBody").value); }
     catch { $("requestBody").focus(); $("requestBody").select(); }
-    window.open(BASE + "/issues/new" + title, "_blank", "noopener");
     toast("لأن الطلب طويل، الصق نص الطلب المنسوخ في مربع وصف GitHub Issue ثم اضغط Submit.");
   } else {
     window.open(full, "_blank", "noopener");
