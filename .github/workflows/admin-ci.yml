@@ -5,12 +5,16 @@ on:
     branches:
       - feature/amaryt-admin-panel
       - feature/amaryt-github-confirmation
+      - feature/amaryt-private-codespaces
     paths:
       - "scripts/admin_request.py"
       - "tests/test_admin_*.py"
       - ".github/workflows/admin-requests.yml"
       - ".github/workflows/admin-confirm.yml"
       - "admin/**"
+      - ".devcontainer/**"
+      - "scripts/run_private_admin.py"
+      - ".github/workflows/admin-pages.yml"
       - ".github/workflows/admin-ci.yml"
   pull_request:
     paths:
@@ -19,6 +23,9 @@ on:
       - ".github/workflows/admin-requests.yml"
       - ".github/workflows/admin-confirm.yml"
       - "admin/**"
+      - ".devcontainer/**"
+      - "scripts/run_private_admin.py"
+      - ".github/workflows/admin-pages.yml"
       - ".github/workflows/admin-ci.yml"
 
 permissions:
@@ -33,7 +40,7 @@ jobs:
       - name: Check JavaScript
         run: node --check admin/app.js
       - name: Check Python syntax
-        run: python3 -m py_compile scripts/admin_request.py
+        run: python3 -m py_compile scripts/admin_request.py scripts/run_private_admin.py
       - name: Run administration tests
         run: python3 -m unittest discover -s tests -p "test_admin_*.py" -v
       - name: Validate current catalog without changing it
