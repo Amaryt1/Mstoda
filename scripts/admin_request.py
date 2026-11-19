@@ -100,12 +100,11 @@ def validate_release(release):
             "date": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")}
 
 
-def parse_issue(event, repository):
+def parse_issue(issue, repository):
     require(repository == REPO, "مستودع غير مصرح به")
-    issue = event.get("issue") or {}
-    require(issue.get("state", "open") == "open", "الطلب مغلق أو تم تنفيذه سابقًا")
+    require(issue.get("state") == "open", "الطلب مغلق أو تم تنفيذه سابقًا")
     require((issue.get("user") or {}).get("id") == OWNER_ID, "مالك الحساب فقط يستطيع الإدارة")
-    require(not issue.get("pull_request"), "لا نعالج طلبات الدمج")
+    require("pull_request" not in issue, "لا نعالج طلبات الدمج")
     body = issue.get("body") or ""
     require(isinstance(body, str) and len(body) <= 65000, "طلب طويل جدًا")
     fence = chr(96) * 3
@@ -287,10 +286,24 @@ def update_store(document, request, lookup=release_digest):
     return dict(schema=1, revision=document["revision"] + 1, current=value, previous=current)
 
 
+def confirmed_request(env):
+    require(env.get("GITHUB_EVENT_NAME") == "workflow_dispatch" and
+            env.get("GITHUB_REF") == "refs/heads/main", "يلزم تأكيد يدوي من الفرع الرئيسي")
+    require(env.get("GITHUB_ACTOR_ID") == str(OWNER_ID) and
+            env.get("GITHUB_ACTOR") and env.get("GITHUB_TRIGGERING_ACTOR") == env["GITHUB_ACTOR"],
+            "مالك الحساب فقط يستطيع تأكيد الطلب")
+    number = env.get("ISSUE_NUMBER", "")
+    require(re.fullmatch(r"[1-9][0-9]{0,8}", number), "رقم طلب غير صالح")
+    issue = json.loads(Path(env["AMARYT_ISSUE_PATH"]).read_text(encoding="utf-8"))
+    require(issue.get("number") == int(number) and
+            issue.get("repository_url") == f"https://api.github.com/repos/{REPO}",
+            "الطلب المسترجع لا يطابق المستودع ورقم الطلب")
+    return parse_issue(issue, env.get("GITHUB_REPOSITORY", ""))
+
+
 def main():
     try:
-        event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text(encoding="utf-8"))
-        request = parse_issue(event, os.environ.get("GITHUB_REPOSITORY", ""))
+        request = confirmed_request(os.environ)
         store = request["operation"] == "store_update"
         path = Path("store-update.json" if store else "apps.json")
         data = json.loads(path.read_text(encoding="utf-8"))

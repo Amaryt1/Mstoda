@@ -20,7 +20,9 @@ jobs:
     # Server-side GitHub account ID, never a browser-supplied user name.
     if: >-
       github.repository == 'Amaryt1/Mstoda' &&
-      github.actor_id == '190318829'
+      github.actor_id == '190318829' &&
+      github.triggering_actor == github.actor &&
+      github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -51,25 +53,11 @@ jobs:
             exit 1
           fi
           gh api "repos/Amaryt1/Mstoda/issues/$ISSUE_NUMBER" > "$RUNNER_TEMP/amaryt-original-issue.json"
-          python3 - <<'PY'
-          import json, os
-          from pathlib import Path
-          issue = json.loads((Path(os.environ['RUNNER_TEMP']) / 'amaryt-original-issue.json').read_text())
-          if issue.get('state') != 'open':
-              raise SystemExit('Issue must be open; closed requests cannot be replayed.')
-          if issue.get('pull_request'):
-              raise SystemExit('Pull requests cannot be submitted as catalog requests.')
-          if (issue.get('user') or {}).get('id') != 190318829:
-              raise SystemExit('Issue must be created by the actual GitHub owner account.')
-          event = {'issue': issue}
-          (Path(os.environ['RUNNER_TEMP']) / 'amaryt-confirmed-event.json').write_text(
-              json.dumps(event, ensure_ascii=False), encoding='utf-8')
-          print('Verified original GitHub issue creator and open state.')
-          PY
 
       - name: Parse and apply validated catalog request
         env:
-          GITHUB_EVENT_PATH: ${{ runner.temp }}/amaryt-confirmed-event.json
+          AMARYT_ISSUE_PATH: ${{ runner.temp }}/amaryt-original-issue.json
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
         run: python3 scripts/admin_request.py
 
       - name: Commit only the approved catalog file

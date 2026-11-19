@@ -27,7 +27,29 @@ class AdminRequestTests(unittest.TestCase):
         body += json.dumps({"schema": 1, "operation": op,
                             "target": "com.example.first", **extras})
         body += "\n" + chr(96)*3
-        return {"issue": {"user": {"id": author}, "body": body}}
+        return {"state": "open", "user": {"id": author}, "body": body}
+
+    def test_manual_dispatch_and_issue_have_independent_identities(self):
+        from tempfile import TemporaryDirectory
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "issue.json"
+            env = dict(GITHUB_EVENT_NAME="workflow_dispatch", GITHUB_REF="refs/heads/main",
+                       GITHUB_ACTOR_ID=str(admin.OWNER_ID), GITHUB_ACTOR="Amaryt1",
+                       GITHUB_TRIGGERING_ACTOR="Amaryt1", GITHUB_REPOSITORY=admin.REPO,
+                       ISSUE_NUMBER="6", AMARYT_ISSUE_PATH=str(path))
+            issue = dict(self.issue(), number=6, repository_url="https://api.github.com/repos/" + admin.REPO)
+            path.write_text(json.dumps(issue))
+            self.assertEqual(admin.confirmed_request(env)["operation"], "hide")
+            for key, value in [("GITHUB_ACTOR_ID", "123"), ("GITHUB_TRIGGERING_ACTOR", "another-user"),
+                               ("GITHUB_ACTOR_ID", ""), ("GITHUB_EVENT_NAME", "issues"),
+                               ("ISSUE_NUMBER", "7"), ("GITHUB_REF", "refs/heads/test")]:
+                with self.subTest(key=key, value=value), self.assertRaises(admin.InvalidRequest):
+                    admin.confirmed_request(dict(env, **{key: value}))
+            for patch in [dict(user={"id": 123}), dict(state="closed"), dict(state=None),
+                          dict(pull_request={}), dict(repository_url="https://example.org")]:
+                path.write_text(json.dumps(dict(issue, **patch)))
+                with self.subTest(patch=patch), self.assertRaises(admin.InvalidRequest):
+                    admin.confirmed_request(env)
 
     def test_owner_issue_is_accepted(self):
         request = admin.parse_issue(self.issue(), admin.REPO)
@@ -39,7 +61,7 @@ class AdminRequestTests(unittest.TestCase):
 
     def test_closed_issue_rejected_to_prevent_replay(self):
         event = self.issue()
-        event["issue"]["state"] = "closed"
+        event["state"] = "closed"
         with self.assertRaises(admin.InvalidRequest):
             admin.parse_issue(event, admin.REPO)
 
@@ -49,8 +71,8 @@ class AdminRequestTests(unittest.TestCase):
 
     def test_malformed_issue_rejected(self):
         with self.assertRaises(admin.InvalidRequest):
-            admin.parse_issue({"issue": {"user": {"id": admin.OWNER_ID},
-                                          "body": "please delete everything"}}, admin.REPO)
+            admin.parse_issue({"state": "open", "user": {"id": admin.OWNER_ID},
+                                          "body": "please delete everything"}, admin.REPO)
 
     def test_hide_and_show_without_data_loss(self):
         data = seed()

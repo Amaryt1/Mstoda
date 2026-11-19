@@ -17,8 +17,9 @@ class GitHubOnlyAuthorizationTests(unittest.TestCase):
         confirm = (ROOT / ".github/workflows/admin-confirm.yml").read_text()
         self.assertIn("workflow_dispatch:", confirm)
         self.assertIn("github.actor_id == '190318829'", confirm)
-        self.assertIn("issue.get('state') != 'open'", confirm)
-        self.assertIn("(issue.get('user') or {}).get('id') != 190318829", confirm)
+        self.assertIn("github.triggering_actor == github.actor", confirm)
+        self.assertIn("AMARYT_ISSUE_PATH:", confirm)
+        self.assertNotIn("GITHUB_EVENT_PATH:", confirm)
         self.assertIn("python3 scripts/admin_request.py", confirm)
         self.assertIn("gh issue close", confirm)
 
