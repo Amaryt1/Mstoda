@@ -58,7 +58,7 @@ const fixture=()=>({
 
 test("unauthenticated users never receive dashboard, script or app data",async()=>{
   const env=fixture();
-  for(const path of ["/","/app.js","/styles.css"]){
+  for(const path of ["/","/app.js","/styles.css","/catalog"]){
     const response=await worker.fetch(request(path),env);
     assert.equal(response.status,303);
     assert.equal(response.headers.get("Location"),"/signin");
@@ -81,6 +81,8 @@ test("server sends OTP only to secret email and authenticates a short-lived sess
   let sent=null;
   try {
     globalThis.fetch=async(url,init)=>{
+      if (url === "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/apps.json")
+        return new Response('{"apps":[]}',{status:200,headers:{"Content-Type":"application/json"}});
       assert.equal(url,"https://api.resend.com/emails");
       sent=JSON.parse(init.body);
       return new Response('{"id":"sent"}',{status:200,headers:{"Content-Type":"application/json"}});
@@ -101,6 +103,9 @@ test("server sends OTP only to secret email and authenticates a short-lived sess
     const panel=await worker.fetch(request("/app.js","GET",null,sessionCookie),env);
     assert.equal(panel.status,200);
     assert.equal(await panel.text(),"CONFIDENTIAL ADMIN UI");
+    const catalog=await worker.fetch(request("/catalog","GET",null,sessionCookie),env);
+    assert.equal(catalog.status,200);
+    assert.equal(await catalog.text(),'{"apps":[]}');
     const logout=await worker.fetch(request("/auth/logout","POST",{},sessionCookie),env);
     assert.equal(logout.status,303);
     const invalid=await worker.fetch(request("/app.js","GET",null,sessionCookie),env);
