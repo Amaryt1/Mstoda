@@ -1,6 +1,13 @@
 {
   "schema": 1,
-  "revision": 0,
-  "current": null,
+  "revision": 1,
+  "current": {
+    "version": "2.9.1",
+    "build": "2",
+    "url": "https://github.com/Amaryt1/Mstoda/releases/download/1.0/AMARYT-STORE.ipa",
+    "notes": "إصلاح تكرار التطبيقات وتحسين التوقيع وتطوير المتجر",
+    "mandatory": true,
+    "sha256": "31793d16da00cc15591e67cc0cd8f35aedc3afc30dfd0304b6d996a01859001e"
+  },
   "previous": null
 }
