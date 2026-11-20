@@ -5,6 +5,60 @@
   "website": "https://github.com/Amaryt1/Mstoda",
   "apps": [
     {
+      "bundleIdentifier": "com.rockstargames.gtav",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "date": "2026-11-20T11:47:52Z",
+          "downloadURL": "https://github.com/Amaryt1/Mstoda/releases/download/1.0/GTA-V-Arabic-1.2.2.ipa",
+          "localizedDescription": "**النسخة العربية من GTA للايفون**"
+        }
+      ],
+      "screenshotURLs": [],
+      "name": "GTA-V-Arabic",
+      "category": "ألعاب",
+      "localizedDescription": "**النسخة العربية من GTA للايفون**",
+      "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/Icons/images%20%284%29.png",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/Banners/IMG_20261120_141314_188.jpg",
+      "sortOrder": -2
+    },
+    {
+      "bundleIdentifier": "jp.co.capcom.re4ios",
+      "versions": [
+        {
+          "version": "1.0.7",
+          "date": "2026-11-20T11:47:52Z",
+          "downloadURL": "https://github.com/Amaryt1/Mstoda/releases/download/1.0/Resident.Evil.4.ipa",
+          "localizedDescription": "🧟 **عش رعب البقاء الأسطوري مع Resident Evil 4 حصرياً مجاناً!**\nاستمتع بأقوى ألعاب الكلاسيك والتشويق على هاتفك الآيفون والآيباد بجرافيك مذهل، وبدون دفع سعرها الأصلي في الأب ستور:\n💰 **سعرها في الأب ستور:** \n```\n$9.99\n```\n لكل لعبة على حدة، ولكنها متوفرة لديك **مجاناً** بالكامل ضمن اشتراك المتجر!\n📱 **متطلبات التشغيل:** تتطلب نظام iOS 17.0 أو أحدث، ومعالج (A17 Pro أو أحدث للآيفون) أو (سلسلة معالجات M للآيباد).\n⚡ **تحميل مباشر وسهل:** العبها فوراً على جهازك دون قيود."
+        }
+      ],
+      "screenshotURLs": [],
+      "name": "Resident Evil 4",
+      "category": "ألعاب",
+      "localizedDescription": "🧟 **عش رعب البقاء الأسطوري مع Resident Evil 4 حصرياً مجاناً!**\nاستمتع بأقوى ألعاب الكلاسيك والتشويق على هاتفك الآيفون والآيباد بجرافيك مذهل، وبدون دفع سعرها الأصلي في الأب ستور:\n💰 **سعرها في الأب ستور:** \n```\n$9.99\n```\n لكل لعبة على حدة، ولكنها متوفرة لديك **مجاناً** بالكامل ضمن اشتراك المتجر!\n📱 **متطلبات التشغيل:** تتطلب نظام iOS 17.0 أو أحدث، ومعالج (A17 Pro أو أحدث للآيفون) أو (سلسلة معالجات M للآيباد).\n⚡ **تحميل مباشر وسهل:** العبها فوراً على جهازك دون قيود.",
+      "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/Icons/400x400Icon.ApSmac01-75.webp",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/Banners/IMG_20261120_141313_622.jpg",
+      "sortOrder": -1
+    },
+    {
+      "bundleIdentifier": "jp.co.capcom.re3ios",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "date": "2026-11-20T11:47:52Z",
+          "downloadURL": "https://github.com/Amaryt1/Mstoda/releases/download/1.0/Resident.Evil.3.ipa",
+          "localizedDescription": "🧟 **عش رعب البقاء الأسطوري مع Resident Evil 3 حصرياً مجاناً!**\nاستمتع بأقوى ألعاب الكلاسيك والتشويق على هاتفك الآيفون والآيباد بجرافيك مذهل، وبدون دفع سعرها الأصلي في الأب ستور:\n💰 **سعرها في الأب ستور:** \n```\n$9.99\n```\n لكل لعبة على حدة، ولكنها متوفرة لديك **مجاناً** بالكامل ضمن اشتراك المتجر!\n📱 **متطلبات التشغيل:** تتطلب نظام iOS 17.0 أو أحدث، ومعالج (A17 Pro أو أحدث للآيفون) أو (سلسلة معالجات M للآيباد).\n⚡ **تحميل مباشر وسهل:** العبها فوراً على جهازك دون قيود."
+        }
+      ],
+      "screenshotURLs": [],
+      "name": "Resident Evil 3",
+      "category": "ألعاب",
+      "localizedDescription": "🧟 **عش رعب البقاء الأسطوري مع Resident Evil 3 حصرياً مجاناً!**\nاستمتع بأقوى ألعاب الكلاسيك والتشويق على هاتفك الآيفون والآيباد بجرافيك مذهل، وبدون دفع سعرها الأصلي في الأب ستور:\n💰 **سعرها في الأب ستور:** \n```\n$9.99\n```\n لكل لعبة على حدة، ولكنها متوفرة لديك **مجاناً** بالكامل ضمن اشتراك المتجر!\n📱 **متطلبات التشغيل:** تتطلب نظام iOS 17.0 أو أحدث، ومعالج (A17 Pro أو أحدث للآيفون) أو (سلسلة معالجات M للآيباد).\n⚡ **تحميل مباشر وسهل:** العبها فوراً على جهازك دون قيود.",
+      "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/Icons/re3.png",
+      "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/Banners/IMG_20261120_141313_964.jpg",
+      "sortOrder": 0
+    },
+    {
       "bundleIdentifier": "com.guohua.ciner",
       "versions": [
         {
