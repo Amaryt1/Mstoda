@@ -5,6 +5,24 @@
   "website": "https://github.com/Amaryt1/Mstoda",
   "apps": [
     {
+      "bundleIdentifier": "com.toyopagroup.picaboo",
+      "versions": [
+        {
+          "version": "1.0",
+          "date": "2026-11-21T21:50:24Z",
+          "downloadURL": "https://github.com/Amaryt1/Mstoda/releases/download/1.0/Snapchat_Nobel.ipa",
+          "localizedDescription": "Snapchat plus - إصدار 1.0"
+        }
+      ],
+      "screenshotURLs": [],
+      "name": "Snapchat plus",
+      "category": "تواصل اجتماعي",
+      "localizedDescription": "Snapchat plus - إصدار 1.0",
+      "iconURL": "https://i.ibb.co/G6dS2YJ/images-5.png",
+      "bannerURL": "https://i.ibb.co/3y15CBwk/file-00000000021082108b67b47f3eab6406.png",
+      "sortOrder": -4
+    },
+    {
       "bundleIdentifier": "com.miniclip.8ballpoolmult",
       "versions": [
         {
