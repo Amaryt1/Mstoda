@@ -59,6 +59,24 @@
       "sortOrder": -2
     },
     {
+      "bundleIdentifier": "com.seeyouiyos.play",
+      "versions": [
+        {
+          "version": "1.4.141",
+          "date": "2026-11-21T22:01:35Z",
+          "downloadURL": "https://github.com/Amaryt1/Mstoda/releases/download/1.0/SeeYouIOSPlay-1.4.141-B157-UNSIGNED-REQUIRES-SIGNER.ipa",
+          "localizedDescription": "SeeYouIOS Play منصة ألعاب حصرية لأجهزة iPhone و iPad، تُقدم لك ألعابًا شهيرة بطريقة جديدة وسهلة. 🔥 الميزات: ✅ دعم GTA V بتقنية Native Port ✅ قسم خاص لألعاب PSP، مع ألعاب جديدة وشائعة ✅ تنزيل وإدارة الألعاب داخل التطبيق ✅ عرض عدد مرات تنزيل كل لعبة ✅ إرسال طلبات وتقارير الألعاب مباشرةً إلى فريق الدعم. يدعم التطبيق أجهزة iPhone و iPad. 🚀 الإصدار 1.4.79 - البناء 95: يتضمن هذا الإصدار إصلاحات وتحديثات هامة لقسم الألعاب، والتنزيلات، والتقارير، وعدادات التنزيل. SeeYouIOS Play - ألعابك المفضلة، في مكان واحد!"
+        }
+      ],
+      "screenshotURLs": [],
+      "name": "SeeYoulOSPlay",
+      "category": "ألعاب",
+      "localizedDescription": "SeeYouIOS Play منصة ألعاب حصرية لأجهزة iPhone و iPad، تُقدم لك ألعابًا شهيرة بطريقة جديدة وسهلة. 🔥 الميزات: ✅ دعم GTA V بتقنية Native Port ✅ قسم خاص لألعاب PSP، مع ألعاب جديدة وشائعة ✅ تنزيل وإدارة الألعاب داخل التطبيق ✅ عرض عدد مرات تنزيل كل لعبة ✅ إرسال طلبات وتقارير الألعاب مباشرةً إلى فريق الدعم. يدعم التطبيق أجهزة iPhone و iPad. 🚀 الإصدار 1.4.79 - البناء 95: يتضمن هذا الإصدار إصلاحات وتحديثات هامة لقسم الألعاب، والتنزيلات، والتقارير، وعدادات التنزيل. SeeYouIOS Play - ألعابك المفضلة، في مكان واحد!",
+      "iconURL": "https://seeyouios.app/public/uploads/apps/SeeYouIOSPlay-1.3.4-Foreground-Resume-Customer-SelfSign/LmiWusytLp.png",
+      "bannerURL": "https://i.ibb.co/Xk8GykfX/file-0000000007d48243b69cfcc4b2c3cdda.png",
+      "sortOrder": -1
+    },
+    {
       "bundleIdentifier": "jp.co.capcom.re4ios",
       "versions": [
         {
@@ -74,7 +92,7 @@
       "localizedDescription": "🧟 **عش رعب البقاء الأسطوري مع Resident Evil 4 حصرياً مجاناً!**\nاستمتع بأقوى ألعاب الكلاسيك والتشويق على هاتفك الآيفون والآيباد بجرافيك مذهل، وبدون دفع سعرها الأصلي في الأب ستور:\n💰 **سعرها في الأب ستور:** \n```\n$9.99\n```\n لكل لعبة على حدة، ولكنها متوفرة لديك **مجاناً** بالكامل ضمن اشتراك المتجر!\n📱 **متطلبات التشغيل:** تتطلب نظام iOS 17.0 أو أحدث، ومعالج (A17 Pro أو أحدث للآيفون) أو (سلسلة معالجات M للآيباد).\n⚡ **تحميل مباشر وسهل:** العبها فوراً على جهازك دون قيود.",
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/Icons/400x400Icon.ApSmac01-75.webp",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/Banners/IMG_20261120_141313_622.jpg",
-      "sortOrder": -1
+      "sortOrder": 0
     },
     {
       "bundleIdentifier": "jp.co.capcom.re3ios",
@@ -92,7 +110,7 @@
       "localizedDescription": "🧟 **عش رعب البقاء الأسطوري مع Resident Evil 3 حصرياً مجاناً!**\nاستمتع بأقوى ألعاب الكلاسيك والتشويق على هاتفك الآيفون والآيباد بجرافيك مذهل، وبدون دفع سعرها الأصلي في الأب ستور:\n💰 **سعرها في الأب ستور:** \n```\n$9.99\n```\n لكل لعبة على حدة، ولكنها متوفرة لديك **مجاناً** بالكامل ضمن اشتراك المتجر!\n📱 **متطلبات التشغيل:** تتطلب نظام iOS 17.0 أو أحدث، ومعالج (A17 Pro أو أحدث للآيفون) أو (سلسلة معالجات M للآيباد).\n⚡ **تحميل مباشر وسهل:** العبها فوراً على جهازك دون قيود.",
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/Icons/re3.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/Banners/IMG_20261120_141313_964.jpg",
-      "sortOrder": 0
+      "sortOrder": 1
     },
     {
       "bundleIdentifier": "com.guohua.ciner",
@@ -113,7 +131,7 @@
       "iconURL": "https://ipaomtk.com/wp-content/uploads/2023/02/unnamed-4-2.png",
       "bannerURL": "https://i.ibb.co/Wpnnkh8P/image.png",
       "tintColor": "#4299E1",
-      "sortOrder": 3
+      "sortOrder": 2
     },
     {
       "bundleIdentifier": "com.facebook.Facebook",
@@ -133,7 +151,7 @@
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQFace_1.2_Facebook_20261117_003919.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQFace%20Banner.jpg",
       "tintColor": "#4299E1",
-      "sortOrder": 4
+      "sortOrder": 3
     },
     {
       "bundleIdentifier": "com.burbn.instagram",
@@ -153,7 +171,7 @@
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQGram_1.3_20261117_003912.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQGram%20Banner.webp",
       "tintColor": "#4299E1",
-      "sortOrder": 5
+      "sortOrder": 4
     },
     {
       "bundleIdentifier": "app.swiftgram.ios",
@@ -173,7 +191,7 @@
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQSwift_1.5_20261117_003915.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQSwift%20Banner.webp",
       "tintColor": "#4299E1",
-      "sortOrder": 6
+      "sortOrder": 5
     },
     {
       "bundleIdentifier": "ph.telegra.Telegraph",
@@ -193,7 +211,7 @@
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQTele_1.5_20261117_003917.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQTele%20Banner.webp",
       "tintColor": "#4299E1",
-      "sortOrder": 7
+      "sortOrder": 6
     },
     {
       "bundleIdentifier": "com.google.ios.youtube",
@@ -213,7 +231,7 @@
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQTube_1.3_20261117_003922.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQTube%20Banner.webp",
       "tintColor": "#4299E1",
-      "sortOrder": 8
+      "sortOrder": 7
     },
     {
       "bundleIdentifier": "night.ntv1.iQTv",
@@ -233,7 +251,7 @@
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Meta_AI_iQTv_20261117_003926.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/iQTv%20Banner.webp",
       "tintColor": "#4299E1",
-      "sortOrder": 9
+      "sortOrder": 8
     },
     {
       "bundleIdentifier": "net.peakgames.kammelna",
@@ -253,7 +271,7 @@
       "iconURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Kmlna.png",
       "bannerURL": "https://raw.githubusercontent.com/Amaryt1/Mstoda/main/source-images/aa/Kmlna%20bnar.png",
       "tintColor": "#4299E1",
-      "sortOrder": 1
+      "sortOrder": 9
     }
   ],
   "news": [],
